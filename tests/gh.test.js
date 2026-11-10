@@ -34,3 +34,10 @@ test('safeGithubUrl lets through https github.com links only', () => {
     'https://github.com.evil.example/x', 'https://evil.example/github.com/x', 'https://user@evil.example', 'https://vercel.app/x', '', null, undefined,
   ]) assert.equal(safeGithubUrl(bad), null, String(bad));
 });
+
+test('auth checks only the active account, so a stale second account does not block the panel', async () => {
+  const calls = [];
+  const exec = async (cmd, args) => { calls.push([cmd, ...args].join(' ')); return { code: args.includes('--active') ? 0 : 1, stdout: '', stderr: '' }; };
+  assert.equal(await createGh(exec).authOk(), true);
+  assert.deepEqual(calls, ['gh auth status --active']);
+});

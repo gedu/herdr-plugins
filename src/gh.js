@@ -47,6 +47,6 @@ export function createGh(exec) {
     fetchJobs: async (repo, runId) => (await json(['api', `repos/${repo}/actions/runs/${Number(runId)}/jobs?per_page=50`])).jobs.map((j) => ({
       id: j.id, name: j.name, status: j.status, conclusion: j.conclusion, steps: (j.steps ?? []).map((x) => ({ number: x.number, name: x.name, status: x.status, conclusion: x.conclusion })),
     })),
-    authOk: async () => (await exec('gh', ['auth', 'status'])).code === 0,
+    authOk: async () => (await exec('gh', ['auth', 'status', '--active'])).code === 0,
   };
 }

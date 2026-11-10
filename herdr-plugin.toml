@@ -1,0 +1,18 @@
+id = "gedu.pr-pane"
+name = "PR pane"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "A right-side pane with the PRs your agents opened, per session and globally."
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "toggle"
+title = "Toggle the PR panel"
+contexts = ["workspace"]
+command = ["node", "src/toggle.js"]
+
+[[panes]]
+id = "panel"
+title = "Pull requests"
+placement = "split"
+command = ["node", "src/main.js"]
