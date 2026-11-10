@@ -83,3 +83,19 @@ test('the output fits the pane height', () => {
   assert.equal(out.lines.length, 15);
   assert.ok(plain(out).some((l) => l.includes('PR 30')), 'the selected card is scrolled into view');
 });
+
+test('no escape sequence or bidi control from GitHub or Herdr data reaches the screen', () => {
+  const evil = 'x\x1b]8;;https://evil.example\x07CLICK\x1b]8;;\x07\x1b[2J\x07‮RLO';
+  const merged = card(4, { over: { state: 'MERGED', mergedAt: '2026-11-10T11:58:00Z', mergeCommit: { oid: 'abc' }, baseRefName: `main${evil}`, headRefName: `feat${evil}` } });
+  merged.flow = { runs: [{ id: 1, name: `wf${evil}`, status: 'in_progress', conclusion: null, updatedAt: '2026-11-10T11:59:00Z' }], jobs: {}, active: true };
+  merged.agent.app = `claude${evil}`;
+  merged.owner.app = merged.agent.app;
+  for (const view of ['list', 'detail']) {
+    const out = render({ cards: [merged], sessionPane: 'w1:p1', view, selected: merged.url }, { width: 60, height: 40, now: NOW });
+    for (const line of out.lines) {
+      const text = stripAnsi(line);
+      assert.doesNotMatch(text, /[\x00-\x1f\x7f‪-‮⁦-⁩]/, `${view}: ${JSON.stringify(text)}`);
+      assert.doesNotMatch(line, /\x1b\]/, `${view}: OSC leaked`);
+    }
+  }
+});

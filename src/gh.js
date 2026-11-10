@@ -13,14 +13,17 @@ const THREADS_QUERY = `query($owner:String!,$name:String!,$number:Int!){reposito
   closingIssuesReferences(first:10){nodes{number title state url}}
 }}}`;
 
+// An owner or repo name: no "." or ".." (they would walk the API path) and no leading dash.
+const segment = (s) => /^[A-Za-z0-9_.-]+$/.test(s) && !s.startsWith('-') && s !== '.' && s !== '..';
+
 export function parsePrUrl(url) {
   const m = /^https:\/\/github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)\/pull\/(\d+)(?:[/?#]|$)/.exec(String(url));
-  return m ? { owner: m[1], name: m[2], repo: `${m[1]}/${m[2]}`, number: Number(m[3]), url: `https://github.com/${m[1]}/${m[2]}/pull/${m[3]}` } : null;
+  return m && segment(m[1]) && segment(m[2]) ? { owner: m[1], name: m[2], repo: `${m[1]}/${m[2]}`, number: Number(m[3]), url: `https://github.com/${m[1]}/${m[2]}/pull/${m[3]}` } : null;
 }
 
 export function parseRemote(remote) {
   const m = /(?:^git@github\.com:|^ssh:\/\/git@github\.com\/|^https:\/\/github\.com\/)([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/.exec(String(remote).trim());
-  return m ? `${m[1]}/${m[2]}` : null;
+  return m && segment(m[1]) && segment(m[2]) ? `${m[1]}/${m[2]}` : null;
 }
 
 export function createGh(exec) {

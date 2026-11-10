@@ -41,3 +41,9 @@ test('auth checks only the active account, so a stale second account does not bl
   assert.equal(await createGh(exec).authOk(), true);
   assert.deepEqual(calls, ['gh auth status --active']);
 });
+
+test('repo parsers refuse dot segments and leading dashes', () => {
+  for (const bad of ['https://github.com/../x/pull/1', 'https://github.com/a/../pull/1', 'https://github.com/-a/r/pull/1', 'https://github.com/a/./pull/1']) assert.equal(parsePrUrl(bad), null, bad);
+  for (const bad of ['https://github.com/a/..', 'git@github.com:../x.git', 'https://github.com/-x/r']) assert.equal(parseRemote(bad), null, bad);
+  assert.equal(parseRemote('https://github.com/my.org/repo.js.git'), 'my.org/repo.js');
+});

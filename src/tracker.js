@@ -22,6 +22,8 @@ const FLOW_POLL_MS = 15_000;
 const DISMISSED_MAX = 500;
 
 const clean = (pr) => ({ ...pr, title: sanitize(pr.title), body: sanitize(pr.body) });
+// Workflow, job and step names are repo content: anyone whose change merged can set them.
+const cleanJobs = (list) => list.map((j) => ({ ...j, name: sanitize(j.name), steps: (j.steps ?? []).map((x) => ({ ...x, name: sanitize(x.name) })) }));
 const ownerOf = (a) => ({ pane: a.pane, terminal: a.terminal, workspace: a.workspace, session: a.session, app: a.app, cwd: a.cwd });
 
 export function createTracker({ gh, remoteOf, branchOf, branchExists, store, settings, now = Date.now }) {
@@ -101,12 +103,12 @@ export function createTracker({ gh, remoteOf, branchOf, branchExists, store, set
     const sha = live.get(url)?.pr?.mergeCommit?.oid;
     if (!entry || !sha) return;
     const old = flows.get(url) ?? { runs: [], jobs: {} };
-    const runs = await gh.fetchRuns(entry.repo, sha).catch(() => old.runs);
+    const runs = (await gh.fetchRuns(entry.repo, sha).catch(() => old.runs)).map((r) => ({ ...r, name: sanitize(r.name) }));
     const jobs = { ...old.jobs };
     const due = runs.filter((r) => r.status !== 'completed' || (old.runs.some((o) => o.id === r.id && o.status !== 'completed') && !jobs[r.id]?.final));
     await Promise.all(due.map(async (r) => {
       const list = await gh.fetchJobs(entry.repo, r.id).catch(() => null);
-      if (list) jobs[r.id] = { jobs: list, final: r.status === 'completed' };
+      if (list) jobs[r.id] = { jobs: cleanJobs(list), final: r.status === 'completed' };
     }));
     flows.set(url, { runs, jobs, checkedAt: now() });
   }

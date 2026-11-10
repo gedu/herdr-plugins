@@ -48,12 +48,16 @@ function fit(text, room) {
 
 const oneLine = (value) => sanitize(value).replace(/\s+/g, ' ').trim();
 
+// Every segment is cleaned here, so no string from GitHub or Herdr can write escape sequences
+// (colors, OSC 8 links, screen clears) or bidi controls to the terminal, whatever path it took.
+const clean = (value) => sanitize(value).replace(/\n/g, ' ');
+
 // One screen line from [text, style] segments, cut to the width. A background fills the whole line.
 function paint(segs, width, bg = '', fill = Boolean(bg)) {
   let out = '', used = 0;
   for (const [raw, style = ''] of segs) {
     if (used >= width) break;
-    const text = fit(String(raw), width - used);
+    const text = fit(clean(raw), width - used);
     out += `${bg}${style}${text}${S.reset}`;
     used += visibleWidth(text);
   }

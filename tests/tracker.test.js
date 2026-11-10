@@ -121,3 +121,15 @@ test('a PR whose owner pane closed stays listed without an agent', async () => {
   assert.equal(card.agent, null);
   assert.equal(card.owner.session, 'payments');
 });
+
+test('workflow, job and step names are sanitized when they come in', async () => {
+  const w = world(), t = w.tracker();
+  w.pr = pr({ state: 'MERGED', mergedAt: '2026-11-10T11:58:00Z', mergeCommit: { oid: 'm1' } });
+  w.gh.fetchRuns = async () => [{ id: 1, name: 'Deploy\x1b[2J‮', status: 'in_progress', conclusion: null, updatedAt: '2026-11-10T11:59:00Z' }];
+  w.gh.fetchJobs = async () => [{ id: 9, name: 'job\x1b]8;;x\x07', status: 'in_progress', steps: [{ number: 1, name: 'step\x07', status: 'in_progress' }] }];
+  await t.tick([agent()]);
+  const flow = t.cards()[0].flow;
+  assert.equal(flow.runs[0].name, 'Deploy');
+  assert.equal(flow.jobs[1].jobs[0].name, 'job');
+  assert.equal(flow.jobs[1].jobs[0].steps[0].name, 'step');
+});
