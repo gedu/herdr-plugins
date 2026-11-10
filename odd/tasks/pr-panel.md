@@ -18,11 +18,11 @@ Branch: `feat/pr-panel` · Delivery: ask-on-risk · Test runner: `node --test te
 
 ## Tasks
 
-- T1 · S7, S9 · inline · core modules ported with the security fixes and tests · pending
-- T2 · S2, S4, S5, S6 · inline · tracker with ownership, removal rules, dismiss · pending
-- T3 · S3, S7, S9 · inline · Herdr/git/open adapter · pending
-- T4 · S1, S2, S8 · inline · renderer: list, session section, timeline · pending
-- T5 · S3, S9, S10 · inline · TUI loop, manifest, toggle action, README · pending
+- T1 · S7, S9 · inline · core modules ported with the security fixes and tests · done 2d69bd5 (RED: missing url.js; GREEN 3/3)
+- T2 · S2, S4, S5, S6 · inline · tracker with ownership, removal rules, dismiss · done 203691d (RED: missing tracker.js; GREEN 11/11)
+- T3 · S3, S7, S9 · inline · Herdr/git/open adapter · done 9fdb8ea (RED: stderr envelope; GREEN 18/18; real git checked)
+- T4 · S1, S2, S8 · inline · renderer: list, session section, timeline · done df63b59 (RED: ✕ column; GREEN 38/38)
+- T5 · S3, S9, S10 · inline · TUI loop, manifest, toggle action, README · done 2a892f3 (GREEN 46/46; pty smoke; live GitHub read)
 - T6 · all · inline · live check in Herdr once the server runs 0.9.5 · blocked on server restart
 
 ## Log
@@ -33,3 +33,6 @@ Branch: `feat/pr-panel` · Delivery: ask-on-risk · Test runner: `node --test te
 - L4 "ok, meanwhile can we do all the improvements to see the PR panel?"
 - L5 Evidence: installed `herdr` is the TUI; client 0.9.5, server still 0.7.5 (`protocol_mismatch`), so live checks wait for a server restart. 0.9.5 has plugins (`herdr-plugin.toml`, panes with `placement = "split"`). `herdr agent list` gives `agent_status`, `cwd`, `pane_id`, `terminal_id`, `workspace_id`, `focused`; no branch, so it comes from `git branch --show-current`.
 - L6 Engram mirror pending: project resolution is ambiguous from this session.
+- L7 Found while building: `gh auth status` exits 1 when any stored account has an invalid token, even with a working active account; the panel uses `gh auth status --active` (pinned by a test). Same defect exists upstream.
+- L8 Evidence: pty smoke run draws the pane, shows Herdr's protocol_mismatch message, `q` restores the terminal, state lands in HERDR_PLUGIN_STATE_DIR. End-to-end tracker run against real GitHub (cli/cli#15010, read-only) discovered the PR, drew the timeline, and removed it after a branch change. keys.js test was written with its implementation (no observed RED).
+- L9 Next: T6 after the server restart: `herdr plugin link`, toggle action, `agent focus` target form (pane id vs terminal id), mouse forwarding, workspace list shape.
