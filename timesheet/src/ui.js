@@ -47,7 +47,8 @@ export function screen(state, width) {
   lines.push(`${GRAY} 8 h · ${state.serviceName ?? 'service of your last entry'}${RESET}`, '');
   if (logged[date]) {
     lines.push(...logged[date].map((b) => ` - ${b}`), '');
-    lines.push(` ${GREEN}✓${RESET} Already logged${GRAY} · ←→ day · q close${RESET}`);
+    const done = date === state.today ? 'Today is already logged · nothing to do' : 'Already logged';
+    lines.push(` ${GREEN}✓${RESET} ${done}${GRAY} · ←→ day · q close${RESET}`);
     return lines.map((l) => fit(l, w));
   }
   const draft = state.drafts?.[date];

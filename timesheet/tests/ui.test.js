@@ -57,7 +57,7 @@ test('no line is wider than the popup', () => {
 });
 
 test('a day already logged shows its note and cannot be published', () => {
-  const lines = text({ ...base, logged: { '2026-11-12': ['SF Figma run'] }, drafts: {} });
+  const lines = text({ ...base, index: 0, logged: { '2026-11-11': ['SF Figma run'] }, drafts: {} });
   assert.ok(lines.includes(' - SF Figma run'));
   assert.ok(lines.at(-1).includes('✓ Already logged'));
   assert.ok(!lines.at(-1).includes('publish'));
@@ -67,4 +67,10 @@ test('the header counts only the days without an entry', () => {
   const lines = text({ ...base, dates: ['2026-11-10', '2026-11-11', '2026-11-12'], logged: { '2026-11-10': ['x'] } });
   assert.ok(lines.some((l) => l.includes('2 days without an entry')));
   assert.ok(text({ ...base, logged: { '2026-11-11': ['x'], '2026-11-12': ['y'] } }).some((l) => l.includes('every day logged')));
+});
+
+test('when today is already logged the popup says so and offers nothing to publish', () => {
+  const lines = text({ ...base, index: 1, logged: { '2026-11-12': ['SF Figma run'] }, drafts: {} });
+  assert.ok(lines.at(-1).includes('✓ Today is already logged · nothing to do'));
+  assert.ok(!lines.some((l) => l.includes('publish') || l.includes('Drafting')));
 });

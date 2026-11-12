@@ -76,3 +76,11 @@ const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace
 
 // The note as Productive stores it (its rich-text editor saves a <ul> of <p> items).
 export const noteHtml = (bullets) => `<ul>${bullets.map((b) => `<li><p>${escapeHtml(b)}</p></li>`).join('')}</ul>`;
+
+// The popup opens on today when today is a working day (logged or not); on a weekend or
+// holiday it opens on the newest day without an entry, else the newest day.
+export function startIndex(dates, missing, today) {
+  if (dates.includes(today)) return dates.indexOf(today);
+  const target = missing.at(-1) ?? dates.at(-1);
+  return Math.max(0, dates.indexOf(target));
+}

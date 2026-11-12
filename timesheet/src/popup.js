@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadConfig, evidence, draft } from './sources.js';
 import { productive } from './productive.js';
-import { localDate, weekdaysBetween, missingDays, bulletsFromNote, noteFromBullets, cleanBullets } from './day.js';
+import { localDate, weekdaysBetween, missingDays, startIndex, bulletsFromNote, noteFromBullets, cleanBullets } from './day.js';
 import { publishDay } from './publish.js';
 import { screen } from './ui.js';
 
@@ -43,7 +43,7 @@ async function load() {
   for (const e of entries) state.logged[e.date] = [...(state.logged[e.date] ?? []), ...bulletsFromNote(e.note)];
   state.dates = weekdaysBetween(localDate(from), state.today).filter((d) => !holidays.includes(d));
   const missing = missingDays(entries, { from: localDate(from), to: state.today, holidays });
-  state.index = Math.max(0, state.dates.indexOf(missing.at(-1) ?? state.dates.at(-1)));
+  state.index = startIndex(state.dates, missing, state.today);
   state.phase = 'ready';
   draw();
   const date = state.dates[state.index];

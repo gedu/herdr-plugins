@@ -24,7 +24,9 @@ shows it in a Herdr popup, and publishes it only when you press enter.
 | The bullets | `claude -p` with Haiku, no settings, no tools; your last 10 notes as style examples | about $0.001 per draft |
 | Publishing | Productive API: 8 h on the service of your most recent entry | free |
 
-It opens on the newest day without an entry, or on today when every day is logged. Holidays
+It opens on today. When today already has an entry it says so and does nothing (no draft,
+nothing to publish); earlier days are still reachable with `←`. On a weekend or holiday it opens
+on the newest day without an entry. Holidays
 are left out because Productive refuses time on them (`422: Time tracking forbidden on holidays`).
 
 Before sending, it checks the day again and refuses if an entry already exists, so a day you

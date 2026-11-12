@@ -72,3 +72,12 @@ test('noteHtml writes the bullet list Productive stores, escaping HTML', async (
 test('missingDays leaves out holidays', () => {
   assert.deepEqual(missingDays([{ date: '2026-11-12' }], { from: '2026-11-10', to: '2026-11-12', holidays: ['2026-11-11'] }), ['2026-11-10']);
 });
+
+test('startIndex opens on today when today is a working day, else on the newest missing day', async () => {
+  const { startIndex } = await import('../src/day.js');
+  const dates = ['2026-11-09', '2026-11-10', '2026-11-12'];
+  assert.equal(startIndex(dates, ['2026-11-09'], '2026-11-12'), 2, 'today, even when logged and older days are missing');
+  assert.equal(startIndex(dates, ['2026-11-10'], '2026-11-14'), 1, 'a Saturday: newest missing day');
+  assert.equal(startIndex(dates, [], '2026-11-14'), 2, 'a Saturday with nothing missing: newest day');
+  assert.equal(startIndex([], [], '2026-11-14'), 0);
+});
