@@ -6,7 +6,7 @@ shows it in a Herdr popup, and publishes it only when you press enter.
 ```text
  ⢴⣤⠞ Productive · time entry
 
- ‹ Thu 11-12 · today ›   2 days without an entry
+ ‹ Wed 11-11 ›   1 day without an entry
  8 h · Senior React Native Engineer
 
  - SF Figma run
@@ -19,10 +19,13 @@ shows it in a Herdr popup, and publishes it only when you press enter.
 
 | Step | Source | Cost |
 | --- | --- | --- |
-| Days without an entry | Productive API, last 14 days (weekdays only) | free |
+| Days without an entry | Productive API, last 14 days, weekdays minus public holidays | free |
 | What you did | your commits (`git log --author=<email>`) in repos under `roots`, PRs from `gh search prs --author=@me` | free |
 | The bullets | `claude -p` with Haiku, no settings, no tools; your last 10 notes as style examples | about $0.001 per draft |
 | Publishing | Productive API: 8 h on the service of your most recent entry | free |
+
+It opens on the newest day without an entry, or on today when every day is logged. Holidays
+are left out because Productive refuses time on them (`422: Time tracking forbidden on holidays`).
 
 Before sending, it checks the day again and refuses if an entry already exists, so a day you
 logged in the web app is never logged twice.
@@ -36,7 +39,7 @@ at most once a day. It runs on tab switches and makes one Productive request, no
 | --- | --- |
 | `enter` | Publish the shown day |
 | `e` | Edit the bullets in `$VISUAL` / `$EDITOR` (one `- bullet` per line) |
-| `←` `→` | Move between days without an entry |
+| `←` `→` | Pick another working day of the last 14 (logged days show their note, read-only) |
 | `r` | Draft again |
 | `q`, `esc` | Close |
 
@@ -50,12 +53,14 @@ at most once a day. It runs on tab switches and makes one Productive request, no
      "token": "<your Productive API token>",
      "organization_id": "<the number in app.productive.io/<id>-...>",
      "roots": ["~/Documents/work", "~/Documents/side"],
-     "remind_hour": 17
+     "remind_hour": 17,
+     "holiday_calendar_id": "<optional: pin one holiday calendar>"
    }
    ```
 
    `email` defaults to `git config --global user.email`; set it when your Productive email differs.
-   `roots` are scanned 4 levels deep for git repos.
+   `roots` are scanned 4 levels deep for git repos. The API does not say which holiday calendar
+   is yours, so all calendars the token sees are used unless `holiday_calendar_id` pins one.
 
 3. Link the plugin and bind a key (see [`config/keys.toml`](../config/keys.toml)):
 

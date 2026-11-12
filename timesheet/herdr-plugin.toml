@@ -15,8 +15,8 @@ command = ["node", "src/open.js"]
 id = "sheet"
 title = "Productive"
 placement = "popup"
-width = "70%"
-height = 16
+width = "50%"
+height = 14
 command = ["node", "src/popup.js"]
 
 # End-of-day reminder: on a weekday after remind_hour (default 17), once per day,

@@ -55,3 +55,16 @@ test('no line is wider than the popup', () => {
   const long = { ...base, drafts: { '2026-11-12': { status: 'ready', bullets: ['x'.repeat(200)] } } };
   for (const line of text(long, 30)) assert.ok([...line].length <= 30, line);
 });
+
+test('a day already logged shows its note and cannot be published', () => {
+  const lines = text({ ...base, logged: { '2026-11-12': ['SF Figma run'] }, drafts: {} });
+  assert.ok(lines.includes(' - SF Figma run'));
+  assert.ok(lines.at(-1).includes('✓ Already logged'));
+  assert.ok(!lines.at(-1).includes('publish'));
+});
+
+test('the header counts only the days without an entry', () => {
+  const lines = text({ ...base, dates: ['2026-11-10', '2026-11-11', '2026-11-12'], logged: { '2026-11-10': ['x'] } });
+  assert.ok(lines.some((l) => l.includes('2 days without an entry')));
+  assert.ok(text({ ...base, logged: { '2026-11-11': ['x'], '2026-11-12': ['y'] } }).some((l) => l.includes('every day logged')));
+});

@@ -1,5 +1,6 @@
 // Productive REST API (https://developer.productive.io): JSON:API with a personal token.
 const BASE = 'https://api.productive.io/api/v2';
+const shift = (iso, days) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
 
 export function productive({ token, organizationId }) {
   async function call(method, path, body) {
@@ -27,10 +28,17 @@ export function productive({ token, organizationId }) {
       return id;
     },
 
+    // Public holidays. The API does not link a person to a calendar, so this reads every
+    // calendar the token sees, or only `calendarId` when config.json pins one.
+    async holidays(from, to, calendarId) {
+      const q = `filter[after]=${shift(from, -1)}&filter[before]=${shift(to, 1)}${calendarId ? `&filter[holiday_calendar_id]=${calendarId}` : ''}&page[size]=200`;
+      const json = await call('GET', `/holidays?${q}`);
+      return (json?.data ?? []).map((h) => h.attributes?.date).filter((d) => d >= from && d <= to);
+    },
+
     // Entries dated from..to (inclusive). The API's after/before bounds are widened by a day
-    // and the dates re-checked here, so their inclusiveness does not matter.
+    // and the dates re-checked here, so their inclusiveness does not matter (same for holidays).
     async entries(personId, from, to) {
-      const shift = (iso, days) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
       const out = [];
       for (let page = 1; page <= 10; page++) {
         const q = `filter[person_id]=${personId}&filter[after]=${shift(from, -1)}&filter[before]=${shift(to, 1)}&include=service&page[size]=200&page[number]=${page}`;

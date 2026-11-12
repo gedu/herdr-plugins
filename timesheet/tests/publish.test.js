@@ -72,3 +72,15 @@ test('an API error surfaces Productive\'s own message', async () => {
   stubFetch([{ status: 401, body: { errors: [{ title: 'Unauthorized', detail: 'Invalid token' }] } }]);
   await assert.rejects(productive({ token: 'bad', organizationId: '1' }).personId('a@b.c'), /Productive 401: Invalid token/);
 });
+
+test('holidays are read for the configured calendar, or all visible ones', async () => {
+  const requests = stubFetch([
+    { body: { data: [{ id: 'h1', attributes: { date: '2026-11-11' } }, { id: 'h2', attributes: { date: '2026-11-30' } }] } },
+    { body: { data: [] } },
+  ]);
+  const api = productive({ token: 't', organizationId: '1' });
+  assert.deepEqual(await api.holidays('2026-11-01', '2026-11-12', '54860'), ['2026-11-11']);
+  assert.match(requests[0].url, /holidays\?filter\[after\]=2026-10-31&filter\[before\]=2026-11-13&filter\[holiday_calendar_id\]=54860/);
+  await api.holidays('2026-11-01', '2026-11-12');
+  assert.doesNotMatch(requests[1].url, /holiday_calendar_id/);
+});

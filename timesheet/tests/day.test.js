@@ -68,3 +68,7 @@ test('noteHtml writes the bullet list Productive stores, escaping HTML', async (
   assert.equal(noteHtml(['SF run', 'A & <b>']), '<ul><li><p>SF run</p></li><li><p>A &amp; &lt;b&gt;</p></li></ul>');
   assert.deepEqual(bulletsFromNote(noteHtml(['SF run', 'A & <b>'])), ['SF run', 'A & <b>']);
 });
+
+test('missingDays leaves out holidays', () => {
+  assert.deepEqual(missingDays([{ date: '2026-11-12' }], { from: '2026-11-10', to: '2026-11-12', holidays: ['2026-11-11'] }), ['2026-11-10']);
+});

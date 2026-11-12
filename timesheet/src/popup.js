@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadConfig, evidence, draft } from './sources.js';
 import { productive } from './productive.js';
-import { localDate, missingDays, bulletsFromNote, noteFromBullets, cleanBullets } from './day.js';
+import { localDate, weekdaysBetween, missingDays, bulletsFromNote, noteFromBullets, cleanBullets } from './day.js';
 import { publishDay } from './publish.js';
 import { screen } from './ui.js';
 
@@ -29,16 +29,25 @@ async function load() {
   const api = productive({ token: config.token, organizationId: config.organizationId });
   const from = new Date(); from.setDate(from.getDate() - LOOKBACK_DAYS);
   const personId = await api.personId(config.email);
-  const entries = await api.entries(personId, localDate(from), state.today);
+  const [entries, holidays] = await Promise.all([
+    api.entries(personId, localDate(from), state.today),
+    api.holidays(localDate(from), state.today, config.holidayCalendarId),
+  ]);
   const last = entries.at(-1);
   if (!last) throw new Error(`No entries in the last ${LOOKBACK_DAYS} days to copy the service from`);
   ctx = { config, api, personId, serviceId: last.serviceId, examples: entries.slice(-10).map((e) => bulletsFromNote(e.note)).filter((b) => b.length) };
   state.serviceName = last.serviceName;
-  state.dates = missingDays(entries, { from: localDate(from), to: state.today });
-  state.index = Math.max(0, state.dates.length - 1);
+  // Every working day of the window can be picked; days already logged show their note.
+  // Holidays are left out: Productive refuses time on them.
+  state.logged = {};
+  for (const e of entries) state.logged[e.date] = [...(state.logged[e.date] ?? []), ...bulletsFromNote(e.note)];
+  state.dates = weekdaysBetween(localDate(from), state.today).filter((d) => !holidays.includes(d));
+  const missing = missingDays(entries, { from: localDate(from), to: state.today, holidays });
+  state.index = Math.max(0, state.dates.indexOf(missing.at(-1) ?? state.dates.at(-1)));
   state.phase = 'ready';
   draw();
-  if (state.dates.length) redraft(state.dates[state.index]);
+  const date = state.dates[state.index];
+  if (date && !state.logged[date]) redraft(date);
 }
 
 // Each draft or edit of a day bumps its generation; a draft that finishes after a newer
@@ -86,8 +95,7 @@ async function publish(date) {
     await publishDay({ api: ctx.api, personId: ctx.personId, serviceId: ctx.serviceId, date, bullets: current.bullets });
     state.phase = 'done';
     state.message = `Published ${date}`;
-    state.dates.splice(state.index, 1);
-    state.index = Math.max(0, Math.min(state.index, state.dates.length - 1));
+    state.logged[date] = current.bullets;
   } catch (e) {
     state.phase = 'error';
     state.message = String(e.message).slice(0, 160);
@@ -108,11 +116,12 @@ process.stdin.on('data', (key) => {
   if (!date) return;
   if (key === '\x1b[D' || key === 'h') state.index = Math.max(0, state.index - 1);
   else if (key === '\x1b[C' || key === 'l') state.index = Math.min(state.dates.length - 1, state.index + 1);
+  else if (state.logged[date]) { /* a logged day is read-only */ }
   else if (key === 'e') return edit(date);
   else if (key === 'r') return void redraft(date);
   else if (key === '\r') return void publish(date);
   const now = state.dates[state.index];
-  if (now && !state.drafts[now]) return void redraft(now);
+  if (now && !state.drafts[now] && !state.logged[now]) return void redraft(now);
   draw();
 });
 out.on('resize', draw);

@@ -13,9 +13,9 @@ export function weekdaysBetween(from, to) {
   return days;
 }
 
-export function missingDays(entries, { from, to }) {
-  const logged = new Set(entries.map((e) => e.date));
-  return weekdaysBetween(from, to).filter((d) => !logged.has(d));
+export function missingDays(entries, { from, to, holidays = [] }) {
+  const skip = new Set([...entries.map((e) => e.date), ...holidays]);
+  return weekdaysBetween(from, to).filter((d) => !skip.has(d));
 }
 
 export const noteFromBullets = (bullets) => bullets.map((b) => `- ${b}`).join('\n');

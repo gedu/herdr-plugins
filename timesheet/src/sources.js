@@ -15,14 +15,14 @@ export const run = (cmd, args, opts = {}) => new Promise((resolve) => {
 
 const home = (p) => p.replace(/^~(?=$|\/)/, homedir());
 
-// config.json in HERDR_PLUGIN_CONFIG_DIR: { token, organization_id, email?, roots? }.
+// config.json in HERDR_PLUGIN_CONFIG_DIR: { token, organization_id, email?, roots?, remind_hour?, holiday_calendar_id? }.
 export async function loadConfig() {
   const dir = process.env.HERDR_PLUGIN_CONFIG_DIR;
   const file = dir ? join(dir, 'config.json') : null;
   let raw = {};
   try { raw = JSON.parse(await readFile(file, 'utf8')); } catch { /* missing or invalid: reported below */ }
   const email = raw.email || (await run('git', ['config', '--global', 'user.email'])).stdout.trim();
-  const config = { token: raw.token, organizationId: raw.organization_id, email, roots: (raw.roots ?? ["~/Documents"]).map(home), remindHour: raw.remind_hour, file };
+  const config = { token: raw.token, organizationId: raw.organization_id, email, roots: (raw.roots ?? ["~/Documents"]).map(home), remindHour: raw.remind_hour, holidayCalendarId: raw.holiday_calendar_id, file };
   config.problem = !raw.token || !raw.organization_id
     ? `Add "token" and "organization_id" to ${file ?? 'config.json in the plugin config dir'}`
     : !email ? 'Set "email" in config.json or git config --global user.email' : null;

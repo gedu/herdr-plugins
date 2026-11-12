@@ -40,9 +40,16 @@ export function screen(state, width) {
     lines.push(` ${GREEN}✓${RESET} Every weekday is logged.`, '', `${GRAY} q close${RESET}`);
     return lines.map((l) => fit(l, w));
   }
-  const count = state.dates.length;
-  lines.push(` ${state.dates.length > 1 ? '‹ ' : ''}${BOLD}${dayLabel(date, state.today)}${RESET}${state.dates.length > 1 ? ' ›' : ''}${GRAY}   ${count} day${count === 1 ? '' : 's'} without an entry${RESET}`);
+  const logged = state.logged ?? {};
+  const count = state.dates.filter((d) => !logged[d]).length;
+  const summary = count ? `${count} day${count === 1 ? '' : 's'} without an entry` : 'every day logged';
+  lines.push(` ${state.dates.length > 1 ? '‹ ' : ''}${BOLD}${dayLabel(date, state.today)}${RESET}${state.dates.length > 1 ? ' ›' : ''}${GRAY}   ${summary}${RESET}`);
   lines.push(`${GRAY} 8 h · ${state.serviceName ?? 'service of your last entry'}${RESET}`, '');
+  if (logged[date]) {
+    lines.push(...logged[date].map((b) => ` - ${b}`), '');
+    lines.push(` ${GREEN}✓${RESET} Already logged${GRAY} · ←→ day · q close${RESET}`);
+    return lines.map((l) => fit(l, w));
+  }
   const draft = state.drafts?.[date];
   if (!draft || draft.status === 'drafting') lines.push(` ${LOGO} Drafting ${dots(state.frame ?? 0)}`);
   else if (draft.status === 'error') lines.push(` ${RED}Could not draft: ${draft.error}${RESET}`, `${GRAY} press e to write it, or r to retry${RESET}`);
