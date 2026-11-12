@@ -1,0 +1,31 @@
+id = "gedu.tab-names"
+name = "Tab names"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "Names each tab after its agent's worktree or branch, e.g. frn · issue-436."
+platforms = ["macos", "linux"]
+
+# Every trigger runs the same reconcile over all tabs. No Herdr event fires when an
+# agent changes directory, so the agent's next status change (or a tab switch) picks it up.
+[[startup]]
+command = ["node", "src/sync.js"]
+
+[[events]]
+on = "pane.agent_detected"
+command = ["node", "src/sync.js"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["node", "src/sync.js"]
+
+[[events]]
+on = "tab.focused"
+command = ["node", "src/sync.js"]
+
+[[events]]
+on = "worktree.created"
+command = ["node", "src/sync.js"]
+
+[[events]]
+on = "worktree.opened"
+command = ["node", "src/sync.js"]
