@@ -6,3 +6,5 @@
 - Node >= 20, ES modules, no dependencies. Tests: `npm test` inside the plugin folder
   (`node --test tests/*.test.js`).
 - Herdr plugin docs: https://raw.githubusercontent.com/herdrdev/herdr/v0.9.5/docs/next/website/src/content/docs/plugins.mdx
+- Herdr caches a linked plugin's manifest: after editing `herdr-plugin.toml`, run `herdr plugin link ./<folder>` again
+  (code changes in `src/` apply on the next run without it).
