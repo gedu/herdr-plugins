@@ -31,3 +31,9 @@ hunk diff || pause "hunk diff failed (is this folder a git repo?)"
 description = "hunk diff of the focused pane's folder"
 width = "90%"
 height = "90%"
+
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "gedu.timesheet.open"
+description = "log today's time in Productive"

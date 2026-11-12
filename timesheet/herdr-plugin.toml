@@ -1,0 +1,26 @@
+id = "gedu.timesheet"
+name = "Timesheet"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "Drafts the day's Productive time entry from your commits and PRs, and publishes it after you confirm."
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "open"
+title = "Log today's time in Productive"
+contexts = ["workspace"]
+command = ["node", "src/open.js"]
+
+[[panes]]
+id = "sheet"
+title = "Productive"
+placement = "popup"
+width = "70%"
+height = 16
+command = ["node", "src/popup.js"]
+
+# End-of-day reminder: on a weekday after remind_hour (default 17), once per day,
+# a toast if today has no entry. Rides on tab switches; no model call.
+[[events]]
+on = "tab.focused"
+command = ["node", "src/remind.js"]

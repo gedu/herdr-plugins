@@ -7,6 +7,7 @@ Herdr plugins, one per folder. Each folder has its own `herdr-plugin.toml` and i
 | [`pr-pane`](pr-pane/) | A right-side pane with the PRs your agents opened, per session and globally. |
 | [`issue-card`](issue-card/) | A floating card for the GitHub issues an agent mentioned on screen. |
 | [`tab-names`](tab-names/) | Names each tab after its agent's worktree or branch, e.g. `frn · issue-436`. |
+| [`timesheet`](timesheet/) | Drafts the day's Productive time entry from your commits and PRs; publishes on confirm. |
 
 ## Install
 
@@ -37,8 +38,8 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    ```sh
    git clone https://github.com/gedu/herdr-plugins.git ~/Documents/mine/herdr-plugins
    cd ~/Documents/mine/herdr-plugins
-   for p in pr-pane issue-card tab-names; do herdr plugin link "./$p"; done
-   herdr plugin list   # gedu.pr-pane, gedu.issue-card, gedu.tab-names, all enabled
+   for p in pr-pane issue-card tab-names timesheet; do herdr plugin link "./$p"; done
+   herdr plugin list   # gedu.pr-pane, gedu.issue-card, gedu.tab-names, gedu.timesheet, all enabled
    ```
 
    Without a clone, `herdr plugin install gedu/herdr-plugins/<folder>` works too, and
@@ -58,6 +59,10 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    | `ctrl+shift+p` | Toggle the PR panel |
    | `prefix+i` | Issue card for the issues on screen |
    | `prefix+d` | hunk diff of the focused pane's folder |
+   | `prefix+t` | Draft and publish the day's Productive time entry |
+
+4. **Timesheet token.** `timesheet` needs a `config.json` with a Productive API token; see
+   [timesheet/README.md](timesheet/README.md#setup). The person creates the token; never commit it.
 
 ### Where the config lives
 

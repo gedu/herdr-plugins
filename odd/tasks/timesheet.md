@@ -1,0 +1,32 @@
+# timesheet
+
+Objective: a Herdr plugin that drafts the day's Productive time entry from git/PR evidence and publishes it after confirmation.
+Branch: `feat/timesheet` · Delivery: single PR (or direct to main per repo habit) · Test runner: `node --test` in `timesheet/`.
+
+## Specs
+
+- S1. "subir 8hs, y un par de bullet points de lo que hice estaria bueno, mostrandome antes en un popup". One 8 h entry per day with 2-4 short bullets, shown in a Herdr popup before anything is sent. Nothing is published without an explicit confirm.
+- S2. "get the issues I worked on, and get the Jira ticket and get an small summary, look at the previous days I wrote something, they don't have to be exact". Evidence: the day's commits by the user's git email across repos under `~/Documents/CK` and `~/Documents/mine`, the day's PRs via `gh`, Jira keys found in them; the user's previous entries are style examples.
+- S3. Hybrid ("I think hybrid, is the cheapes, I don't wanna spend a lot"): Productive through its REST API with a personal token (read entries, find missing weekdays, create); bullets drafted by `claude -p` with no settings, Haiku, about $0.001 per draft.
+- S4. "something like Publishing, ... some Logo from productive, and some animated dots" / "like this: ⢴⣤⠞ Publishing ●●○, is almost perfect". While publishing the popup shows `⢴⣤⠞ Publishing ●●○` with animated dots, then a done or error line.
+- S5. "me olvido a veces de las tareas": a reminder toast at the end of a weekday when today has no entry, once per day; and the popup lists recent weekdays with no entry so they can be filled.
+- S6. Opened with `prefix+t` (free in Herdr 0.9.5 defaults and the user's config).
+- S7. Never post twice: re-check the date right before creating; if an entry exists, do not create.
+- Assumption: same service as the most recent entry; 480 minutes; note as Markdown bullets like the existing ones.
+
+## Tasks
+
+| ID | Specs | Route | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| T1 | S1-S3, S5, S7 | inline | open | |
+| T2 | S1, S4, S6 | inline | open | |
+| T3 | S5 | inline | open | |
+
+T1: pure day/note/prompt logic + Productive client + evidence + draft. T2: popup and action, keys, docs. T3: end-of-day reminder hook.
+
+## Log
+
+- L1 (2026-11-12): "otra cosa tambien, vos podes conectarte a https://app.productive.io/52239-callstack/time/me?date=2026-11-12, porque me olvido a veces de las tareas, y capaz en algun momento del dia, subir 8hs, y un par de bullet points de lo que hice estaria bueno, mostrandome antes en un popup"
+- L2: Productive history read (2026-10-29..11-12): one 8 h entry per weekday, service "Senior React Native Engineer", 2-4 bullets, entries 11-04..11-12 created in one batch; 10-31 and 11-11 have no entry.
+- L3: `claude -p` via the claude.ai connector costs $0.23-$1.79 per call (connector needs the full user settings); with `--setting-sources ""` Haiku costs $0.001 but loses the connector. User chose the hybrid (S3).
+- L4: API contract from the official OpenAPI spec: base `https://api.productive.io/api/v2`, headers `X-Auth-Token`, `X-Organization-Id`, `Content-Type: application/vnd.api+json`; `filter[person_id|after|before]`, `page[size|number]`; `people?filter[email]`; create body `{data:{type:"time_entries",attributes:{date,time:480,note},relationships:{person,service}}}`.
