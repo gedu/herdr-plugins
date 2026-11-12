@@ -1,0 +1,33 @@
+# Keybindings for these plugins. Append each block to ~/.config/herdr/config.toml
+# unless that file already binds the same key, then run `herdr server reload-config`.
+# Herdr 0.9.5 default bindings checked: none of these keys clash with them.
+
+# PR panel. ctrl+shift+p needs a terminal that tells it apart from ctrl+p (kitty keyboard
+# protocol: Ghostty and kitty do by default). Elsewhere use a free prefix key, e.g. prefix+u.
+[[keys.command]]
+key = "ctrl+shift+p"
+type = "plugin_action"
+command = "gedu.pr-pane.toggle"
+description = "toggle the PR panel"
+
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "gedu.issue-card.show"
+description = "show the GitHub issue card"
+
+# Hunk (https://hunk.dev) diff of the focused pane's checkout. Uses the pane's
+# foreground_cwd so an agent that moved into a worktree shows that worktree's diff.
+[[keys.command]]
+key = "prefix+d"
+type = "popup"
+command = '''
+pause() { printf '\n%s\n\n(press any key to close)' "$1"; stty raw -echo; dd bs=1 count=1 >/dev/null 2>&1; stty sane; exit 1; }
+command -v hunk >/dev/null || pause "hunk is not installed: brew install hunk"
+d=$("$HERDR_BIN_PATH" pane get "$HERDR_ACTIVE_PANE_ID" 2>/dev/null | sed -n 's/.*"foreground_cwd":"\([^"]*\)".*/\1/p')
+cd "${d:-$HERDR_ACTIVE_PANE_CWD}" || pause "cannot open folder: ${d:-$HERDR_ACTIVE_PANE_CWD}"
+hunk diff || pause "hunk diff failed (is this folder a git repo?)"
+'''
+description = "hunk diff of the focused pane's folder"
+width = "90%"
+height = "90%"
