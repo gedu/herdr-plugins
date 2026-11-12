@@ -45,7 +45,9 @@ export function createHost({ exec = execProgram, bin = process.env.HERDR_BIN_PAT
         return {
           pane: a.pane_id, terminal: a.terminal_id, workspace: a.workspace_id,
           session: label.get(a.workspace_id) || title || a.workspace_id || '',
-          title, app: a.display_agent || a.agent || 'agent', status: a.agent_status ?? 'unknown', cwd: a.cwd ?? null, focused: Boolean(a.focused),
+          title, app: a.display_agent || a.agent || 'agent', status: a.agent_status ?? 'unknown',
+          // Where the agent works now (it may have moved into a worktree), not where it was started.
+          cwd: a.foreground_cwd || a.cwd || null, focused: Boolean(a.focused),
         };
       });
     },

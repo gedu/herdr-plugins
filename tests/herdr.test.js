@@ -30,6 +30,18 @@ test('agents come from herdr agent list, named after their workspace', async () 
   ]);
 });
 
+test('an agent that moved into a worktree is read from where it works now, not where it started', async () => {
+  const { exec } = fake([
+    [/^herdr agent list/, ok({ result: { agents: [
+      { agent: 'claude', agent_status: 'idle', cwd: '/repo', foreground_cwd: '/repo-worktrees/bug-433', pane_id: 'w1:p1', workspace_id: 'w1' },
+      { agent: 'claude', agent_status: 'idle', cwd: '/other', pane_id: 'w2:p1', workspace_id: 'w2' },
+    ] } })],
+    [/^herdr workspace list/, ok({ result: { workspaces: [] } })],
+  ]);
+  const agents = await createHost({ exec, bin: 'herdr', exists: () => true }).agents();
+  assert.deepEqual(agents.map((a) => a.cwd), ['/repo-worktrees/bug-433', '/other']);
+});
+
 test('a failed agent list is reported, not read as "no agents"', async () => {
   const { exec } = fake([[/^herdr agent list/, { code: 1, stdout: JSON.stringify({ error: { code: 'protocol_mismatch', message: 'restart the Herdr server' } }), stderr: '' }]]);
   await assert.rejects(createHost({ exec, bin: 'herdr', exists: () => true }).agents(), /restart the Herdr server/);
