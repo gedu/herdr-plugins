@@ -1,6 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { targetOf, parseRemote } from '../src/target.js';
+import { targetOf, parseRemote, refsIn } from '../src/target.js';
+
+test('issue references on screen are found newest first, once each', () => {
+  const text = [
+    'I will start with #436, then #437.',
+    'See https://github.com/acme/web/pull/12 and other/api#5.',
+    'Back to #436 now.',
+  ].join('\n');
+  assert.deepEqual(refsIn(text, 'acme/web'), [
+    { repo: 'acme/web', number: 436 },
+    { repo: 'other/api', number: 5 },
+    { repo: 'acme/web', number: 12 },
+    { repo: 'acme/web', number: 437 },
+  ]);
+});
+
+test('colors, headings and numbers glued to words are not issues', () => {
+  assert.deepEqual(refsIn('color: #000000; # Title\nabc#12 #fff #12a\nstep#3', 'acme/web'), []);
+});
+
+test('bare references need a repo; full URLs and owner/repo#n do not', () => {
+  assert.deepEqual(refsIn('#1 and other/api#2', null), [{ repo: 'other/api', number: 2 }]);
+});
+
+test('the list is capped so the picker stays short', () => {
+  const text = Array.from({ length: 30 }, (_, i) => `#${i + 1}`).join(' ');
+  assert.equal(refsIn(text, 'acme/web').length, 9);
+});
 
 test('a clicked issue or pull request URL names its own repo and number', () => {
   assert.deepEqual(targetOf({ url: 'https://github.com/acme/web/issues/1232' }), { repo: 'acme/web', number: 1232 });

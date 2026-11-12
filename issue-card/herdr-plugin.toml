@@ -2,7 +2,7 @@ id = "gedu.issue-card"
 name = "Issue card"
 version = "0.1.0"
 min_herdr_version = "0.9.5"
-description = "A floating card with the GitHub issue or PR you Control-click or select."
+description = "A floating card for the GitHub issues an agent mentioned on screen."
 platforms = ["macos", "linux"]
 
 [[actions]]

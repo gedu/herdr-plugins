@@ -1,6 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardOf, excerpt } from '../src/card.js';
+import { cardOf, excerpt, listOf } from '../src/card.js';
+
+test('the picker lists each reference with its title and marks the selected one', () => {
+  const items = [
+    { repo: 'acme/web', number: 436, issue: { title: 'Coach chat', state: 'open' } },
+    { repo: 'acme/web', number: 437, issue: { title: 'Fix flicker', state: 'closed', pull_request: { merged_at: 'x' } } },
+    { repo: 'other/api', number: 5, error: 'Not Found' },
+    { repo: 'acme/web', number: 9 },
+  ];
+  const lines = listOf(items, { selected: 1, width: 50, repo: 'acme/web' });
+  const text = lines.join('\n');
+  assert.match(text, /^ {2}#436 {2}Coach chat/m);
+  assert.match(text, /^▌ #437 {2}Fix flicker · Merged/m);
+  assert.match(text, /other\/api#5 {2}Not Found/);
+  assert.match(text, /#9 {2}Loading…/);
+  assert.match(lines.at(-1), /enter card · q close/);
+  for (const line of lines) assert.ok(line.length <= 50, line);
+});
 
 const issue = {
   number: 1232, title: 'Login button does nothing on Safari', state: 'open', user: { login: 'gedu' },

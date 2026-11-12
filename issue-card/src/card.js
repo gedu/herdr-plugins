@@ -50,10 +50,20 @@ function wrap(text, width) {
   return lines;
 }
 
-function status(issue) {
-  const kind = issue.pull_request ? 'pull request' : 'issue';
-  const state = issue.pull_request?.merged_at ? 'Merged' : issue.state === 'open' ? 'Open' : 'Closed';
-  return `${state} ${kind}`;
+const stateOf = (issue) => (issue.pull_request?.merged_at ? 'Merged' : issue.state === 'open' ? 'Open' : 'Closed');
+const status = (issue) => `${stateOf(issue)} ${issue.pull_request ? 'pull request' : 'issue'}`;
+const fit = (line, width) => (line.length > width ? `${line.slice(0, width - 1)}…` : line);
+
+// The picker: one line per reference found on screen, the selected one marked.
+export function listOf(items, { selected, width, repo }) {
+  const rows = items.map((item, i) => {
+    const label = item.repo === repo ? `#${item.number}` : `${item.repo}#${item.number}`;
+    const text = item.issue
+      ? `${sanitize(item.issue.title)}${stateOf(item.issue) === 'Open' ? '' : ` · ${stateOf(item.issue)}`}`
+      : item.error ? sanitize(item.error) : 'Loading…';
+    return fit(`${i === selected ? '▌' : ' '} ${label}  ${text}`, width);
+  });
+  return [' Issues on screen', '', ...rows, '', fit(' j/k move · enter card · q close', width)];
 }
 
 export function cardOf(issue, { width, height = Infinity }) {
