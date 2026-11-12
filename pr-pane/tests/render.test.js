@@ -99,3 +99,20 @@ test('no escape sequence or bidi control from GitHub or Herdr data reaches the s
     }
   }
 });
+
+test('the footer shows every key hint when the pane is wide enough', () => {
+  const list = plain(render({ cards: [card(2)], sessionPane: 'w1:p1', view: 'list' }, { width: 60, height: 20, now: NOW }));
+  assert.equal(list.at(-1).trimEnd(), ' ↵ go · → info · x hide · o web · r refresh');
+  const detail = plain(render({ cards: [card(2)], sessionPane: 'w1:p1', view: 'detail', selected: card(2).url }, { width: 60, height: 40, now: NOW }));
+  assert.equal(detail.at(-1).trimEnd(), ' ← back · ↵ go · o web · x hide');
+});
+
+test('a narrow footer drops whole hints from the end instead of cutting one', () => {
+  for (const width of [12, 20, 26, 34, 40]) {
+    const foot = plain(render({ cards: [card(2)], sessionPane: 'w1:p1', view: 'list' }, { width, height: 20, now: NOW })).at(-1).trimEnd();
+    assert.ok(visibleWidth(foot) <= width, `width ${width}: ${foot}`);
+    assert.ok(!foot.includes('…'), `width ${width} cut a hint: ${foot}`);
+    assert.ok(foot.startsWith(' ↵ go'), `width ${width} lost the first hint: ${foot}`);
+    assert.match(foot, /^( \S+ \w+)( · \S+ \w+)*$/, `width ${width}: ${foot}`);
+  }
+});

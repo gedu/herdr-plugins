@@ -38,11 +38,19 @@ To toggle it with a key, add this to `~/.config/herdr/config.toml`:
 
 ```toml
 [[keys.command]]
-key = "prefix+p"
+key = "ctrl+shift+p"
 type = "plugin_action"
 command = "gedu.pr-pane.toggle"
 description = "toggle the PR panel"
 ```
+
+Avoid `prefix+p`: it is Herdr's default `previous_tab`.
+
+`ctrl+shift+p` needs a terminal that tells it apart from `ctrl+p`, which means a terminal
+speaking the kitty keyboard protocol (Ghostty and kitty do by default; others may need a
+setting). Where it arrives as plain `ctrl+p`, use a prefix key instead, which works in any
+terminal. As of Herdr 0.9.5 these are unbound by default: `prefix+a`, `prefix+f`,
+`prefix+m`, `prefix+u`, `prefix+y`. For example `key = "prefix+u"`.
 
 There is one panel at a time. Toggling from another tab closes it, and toggling again opens it there.
 

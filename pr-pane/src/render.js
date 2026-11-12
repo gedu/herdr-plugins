@@ -185,6 +185,18 @@ function detailBody(card, { width, now }) {
   return rows;
 }
 
+// Key hints in priority order. A narrow pane drops whole hints from the end, never half of one.
+const LIST_HINTS = ['↵ go', '→ info', 'x hide', 'o web', 'r refresh'];
+const DETAIL_HINTS = ['← back', '↵ go', 'o web', 'x hide'];
+
+function footHint(hints, width) {
+  for (let n = hints.length; n > 1; n--) {
+    const text = ` ${hints.slice(0, n).join(' · ')}`;
+    if (visibleWidth(text) <= width) return text;
+  }
+  return ` ${hints[0]}`;
+}
+
 export function render(state, { width, height, now = Date.now() }) {
   const w = Math.max(10, width), h = Math.max(4, height);
   const detail = state.view === 'detail';
@@ -195,7 +207,7 @@ export function render(state, { width, height, now = Date.now() }) {
   head.push({ text: paint([['─'.repeat(w), S.gray]], w), hits: [] });
   const errors = state.error ? wrap(state.error, w - 2, 4).map((l) => ({ text: paint([[` ${l}`, S.red]], w), hits: [] })) : [];
   const body = [...errors, ...(detail ? detailBody(card, { width: w, now }) : listBody(state, { width: w, now }))];
-  const foot = { text: paint([[detail ? ' ← back · ↵ go · o web · x hide' : ' ↵ go · → info · x hide · o web · r', S.gray]], w), hits: [] };
+  const foot = { text: paint([[footHint(detail ? DETAIL_HINTS : LIST_HINTS, w), S.gray]], w), hits: [] };
 
   // Keep the selected card on screen.
   const room = h - head.length - 1;
