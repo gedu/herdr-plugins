@@ -18,9 +18,9 @@ Branch: `feat/timesheet` · Delivery: single PR (or direct to main per repo habi
 
 | ID | Specs | Route | Status | Evidence |
 | --- | --- | --- | --- | --- |
-| T1 | S1-S3, S5, S7 | inline | open | |
-| T2 | S1, S4, S6 | inline | open | |
-| T3 | S5 | inline | open | |
+| T1 | S1-S3, S5, S7 | inline | done (API calls pending a token) | ae65844; RED/GREEN day.test.js; live draft 2026-11-12 $0.0009 |
+| T2 | S1, S4, S6 | inline | done (live publish pending a token) | ae65844; RED/GREEN ui.test.js; pty smoke: setup screen, q closes |
+| T3 | S5 | inline | done (live toast pending a token) | ae65844; RED/GREEN shouldRemind |
 
 T1: pure day/note/prompt logic + Productive client + evidence + draft. T2: popup and action, keys, docs. T3: end-of-day reminder hook.
 
@@ -30,3 +30,5 @@ T1: pure day/note/prompt logic + Productive client + evidence + draft. T2: popup
 - L2: Productive history read (2026-10-29..11-12): one 8 h entry per weekday, service "Senior React Native Engineer", 2-4 bullets, entries 11-04..11-12 created in one batch; 10-31 and 11-11 have no entry.
 - L3: `claude -p` via the claude.ai connector costs $0.23-$1.79 per call (connector needs the full user settings); with `--setting-sources ""` Haiku costs $0.001 but loses the connector. User chose the hybrid (S3).
 - L4: API contract from the official OpenAPI spec: base `https://api.productive.io/api/v2`, headers `X-Auth-Token`, `X-Organization-Id`, `Content-Type: application/vnd.api+json`; `filter[person_id|after|before]`, `page[size|number]`; `people?filter[email]`; create body `{data:{type:"time_entries",attributes:{date,time:480,note},relationships:{person,service}}}`.
+- L5: `claude -p` from Node with stdin left open pulled ~157k extra context tokens ($0.01-0.16/draft); closing stdin brings it to ~$0.0005-0.0009. Fixed in run().
+- L6: Next: user adds the Productive token to config.json; then verify personId/entries live (read-only) and the first publish with the user watching.
