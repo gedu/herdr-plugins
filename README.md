@@ -61,8 +61,15 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    | `prefix+d` | hunk diff of the focused pane's folder |
    | `prefix+t` | Draft and publish the day's Productive time entry |
 
-4. **Timesheet token.** `timesheet` needs a `config.json` with a Productive API token; see
-   [timesheet/README.md](timesheet/README.md#setup). The person creates the token; never commit it.
+4. **Timesheet token.** The person creates a Productive API token (Settings → API integrations)
+   and runs this themselves, so the token never passes through an agent or the repo:
+
+   ```sh
+   cd ~/Documents/mine/herdr-plugins/timesheet && npm run setup -- --org 52239
+   ```
+
+   It asks for the token hidden, checks it against Productive, and saves it with mode 600.
+   Details: [timesheet/README.md](timesheet/README.md#setup).
 
 ### Where the config lives
 

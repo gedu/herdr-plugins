@@ -5,6 +5,6 @@
   "description": "Herdr plugin: drafts the day's Productive time entry and publishes it after you confirm.",
   "type": "module",
   "engines": { "node": ">=20" },
-  "scripts": { "test": "node --test tests/*.test.js" },
+  "scripts": { "test": "node --test tests/*.test.js", "setup": "node src/setup.js" },
   "license": "MIT"
 }

@@ -48,27 +48,33 @@ at most once a day. It runs on tab switches and makes one Productive request, no
 ## Setup
 
 1. In Productive: Settings → API integrations → create a personal token.
-2. Create `config.json` in the plugin config dir (`herdr plugin config-dir gedu.timesheet`):
+2. Link the plugin, then save the token (it is checked against Productive before anything is written):
+
+   ```sh
+   herdr plugin link ./timesheet
+   cd timesheet && npm run setup -- --org <id>   # <id>: the number in app.productive.io/<id>-...
+   ```
+
+   It asks for the token without echoing it (or reads it from stdin: `pbpaste | npm run setup -- --org <id>`),
+   and writes `config.json` in the plugin config dir with mode 600, keeping any other settings.
+   `--org` is only needed the first time. Run it again whenever the token changes.
+
+   Optional settings in that `config.json` (`herdr plugin config-dir gedu.timesheet`):
 
    ```json
    {
-     "token": "<your Productive API token>",
-     "organization_id": "<the number in app.productive.io/<id>-...>",
      "roots": ["~/Documents/work", "~/Documents/side"],
      "remind_hour": 17,
+     "email": "<when your Productive email differs from git config user.email>",
      "holiday_calendar_id": "<optional: pin one holiday calendar>"
    }
    ```
 
-   `email` defaults to `git config --global user.email`; set it when your Productive email differs.
-   `roots` are scanned 4 levels deep for git repos. The API does not say which holiday calendar
-   is yours, so all calendars the token sees are used unless `holiday_calendar_id` pins one.
+   `roots` are scanned 4 levels deep for git repos (default `~/Documents`). The API does not say
+   which holiday calendar is yours, so all calendars the token sees are used unless
+   `holiday_calendar_id` pins one.
 
-3. Link the plugin and bind a key (see [`config/keys.toml`](../config/keys.toml)):
-
-   ```sh
-   herdr plugin link ./timesheet
-   ```
+3. Bind a key (see [`config/keys.toml`](../config/keys.toml)).
 
 Needs Node >= 20, git, the [Claude Code](https://claude.com/claude-code) CLI logged in, and
 optionally `gh` for PR titles.
