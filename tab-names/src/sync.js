@@ -1,10 +1,12 @@
 // The hook behind every trigger: rename each tab after its agent's checkout.
 // Whatever event fired, it reconciles all tabs, so a missed event heals on the next one.
-// Runs are serialized with a lock dir because events arrive in bursts (focus, status).
+// Runs are serialized with a lock dir because events arrive in bursts (focus, status);
+// a run that cannot get the lock skips, since the holder reconciles every tab anyway.
 import { execFile } from 'node:child_process';
-import { mkdir, rm, stat, readFile, writeFile, rename } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { dirname, basename, join } from 'node:path';
 import { labelFor, plan } from './name.js';
+import { withLock } from './lock.js';
 
 const bin = process.env.HERDR_BIN_PATH || 'herdr';
 const stateDir = process.env.HERDR_PLUGIN_STATE_DIR;
@@ -30,19 +32,8 @@ async function gitLabel(dir) {
   return labelFor({ repoRoot, top, branch });
 }
 
-async function withLock(fn) {
-  await mkdir(stateDir, { recursive: true });
-  for (let i = 0; i < 50; i++) {
-    try { await mkdir(lockDir); break; } catch {
-      const age = await stat(lockDir).then((s) => Date.now() - s.mtimeMs, () => 0);
-      if (age > 15_000) await rm(lockDir, { recursive: true, force: true });
-      else await new Promise((r) => setTimeout(r, 100));
-    }
-  }
-  try { return await fn(); } finally { await rm(lockDir, { recursive: true, force: true }); }
-}
-
-await withLock(async () => {
+await mkdir(stateDir, { recursive: true });
+const { ran } = await withLock(lockDir, async () => {
   const [tabs, panes] = await Promise.all([api(['tab', 'list'], 'tabs'), api(['pane', 'list'], 'panes')]);
   const owned = await readFile(ownedFile, 'utf8').then(JSON.parse, () => ({}));
   const dirs = [...new Set(panes.filter((p) => p.agent).map((p) => p.foreground_cwd || p.cwd).filter(Boolean))];
@@ -56,3 +47,4 @@ await withLock(async () => {
   await writeFile(`${ownedFile}.tmp`, JSON.stringify(result.owned, null, 2));
   await rename(`${ownedFile}.tmp`, ownedFile);
 });
+if (!ran) console.error('another run holds the lock; skipped (it reconciles every tab)');
