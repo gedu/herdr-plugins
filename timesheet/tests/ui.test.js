@@ -74,3 +74,8 @@ test('when today is already logged the popup says so and offers nothing to publi
   assert.ok(lines.at(-1).includes('✓ Today is already logged · nothing to do'));
   assert.ok(!lines.some((l) => l.includes('publish') || l.includes('Drafting')));
 });
+
+test('the already-logged message is green, check mark and text', () => {
+  const raw = screen({ ...base, index: 1, logged: { '2026-11-12': ['x'] }, drafts: {} }, 70).at(-1);
+  assert.ok(raw.includes('\x1b[38;2;183;204;133m✓ Today is already logged · nothing to do\x1b[0m'), JSON.stringify(raw));
+});
