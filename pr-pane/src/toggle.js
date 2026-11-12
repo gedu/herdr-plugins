@@ -14,8 +14,12 @@ const context = (() => { try { return JSON.parse(process.env.HERDR_PLUGIN_CONTEX
 const open = (() => { try { return JSON.parse(readFileSync(panelFile, 'utf8')).pane; } catch { return null; } })();
 
 if (open && (await execProgram(bin, ['pane', 'get', open])).code === 0) {
-  const r = await execProgram(bin, ['plugin', 'pane', 'close', open]);
-  if (r.code === 0) rmSync(panelFile, { force: true });
+  let r = await execProgram(bin, ['plugin', 'pane', 'close', open]);
+  // A panel opened before the plugin was relinked is no longer owned by it: close it as a plain pane.
+  if (r.code !== 0) r = await execProgram(bin, ['pane', 'close', open]);
+  // Forget it either way, so a stale record can never block the next toggle.
+  rmSync(panelFile, { force: true });
+  if (r.code !== 0) console.error((r.stdout || r.stderr).trim());
   process.exit(r.code);
 }
 
