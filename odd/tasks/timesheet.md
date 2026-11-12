@@ -12,7 +12,7 @@ Branch: `feat/timesheet` · Delivery: single PR (or direct to main per repo habi
 - S5. "me olvido a veces de las tareas": a reminder toast at the end of a weekday when today has no entry, once per day; and the popup lists recent weekdays with no entry so they can be filled.
 - S6. Opened with `prefix+t` (free in Herdr 0.9.5 defaults and the user's config).
 - S7. Never post twice: re-check the date right before creating; if an entry exists, do not create.
-- Assumption: same service as the most recent entry; 480 minutes; note as Markdown bullets like the existing ones.
+- Assumption: same service as the most recent entry; 480 minutes; note as the HTML list Productive stores (`<ul><li><p>…`), like the existing entries.
 
 ## Tasks
 
@@ -32,3 +32,4 @@ T1: pure day/note/prompt logic + Productive client + evidence + draft. T2: popup
 - L4: API contract from the official OpenAPI spec: base `https://api.productive.io/api/v2`, headers `X-Auth-Token`, `X-Organization-Id`, `Content-Type: application/vnd.api+json`; `filter[person_id|after|before]`, `page[size|number]`; `people?filter[email]`; create body `{data:{type:"time_entries",attributes:{date,time:480,note},relationships:{person,service}}}`.
 - L5: `claude -p` from Node with stdin left open pulled ~157k extra context tokens ($0.01-0.16/draft); closing stdin brings it to ~$0.0005-0.0009. Fixed in run().
 - L6: Next: user adds the Productive token to config.json; then verify personId/entries live (read-only) and the first publish with the user watching.
+- L7: Live reads verified with the token: person 1162553, 10 entries, service "Senior React Native Engineer", missing weekdays [2026-11-11] (10-31 is a Saturday, not a gap). API notes are HTML; publishing now posts the same HTML list.

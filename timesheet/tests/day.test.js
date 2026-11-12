@@ -62,3 +62,9 @@ test('shouldRemind fires once per weekday, only from the reminder hour on', asyn
   assert.equal(shouldRemind(at(13, 18), '2026-11-12', 17), true, 'a new day');
   assert.equal(shouldRemind(at(14, 18), null, 17), false, 'Saturday');
 });
+
+test('noteHtml writes the bullet list Productive stores, escaping HTML', async () => {
+  const { noteHtml, bulletsFromNote } = await import('../src/day.js');
+  assert.equal(noteHtml(['SF run', 'A & <b>']), '<ul><li><p>SF run</p></li><li><p>A &amp; &lt;b&gt;</p></li></ul>');
+  assert.deepEqual(bulletsFromNote(noteHtml(['SF run', 'A & <b>'])), ['SF run', 'A & <b>']);
+});

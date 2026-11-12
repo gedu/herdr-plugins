@@ -18,7 +18,7 @@ test('publishDay re-checks the day, then creates 8 h with the bullets as the not
   assert.equal(id, '991');
   assert.deepEqual(api.calls, [
     ['entries', '7', '2026-11-11', '2026-11-11'],
-    ['create', { personId: '7', serviceId: '42', date: '2026-11-11', minutes: 480, note: '- SF run\n- Metrics' }],
+    ['create', { personId: '7', serviceId: '42', date: '2026-11-11', minutes: 480, note: '<ul><li><p>SF run</p></li><li><p>Metrics</p></li></ul>' }],
   ]);
 });
 

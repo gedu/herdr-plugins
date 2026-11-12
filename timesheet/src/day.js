@@ -71,3 +71,8 @@ export function shouldRemind(now, lastReminded, hour) {
   const day = now.getDay();
   return day !== 0 && day !== 6 && now.getHours() >= hour && lastReminded !== localDate(now);
 }
+
+const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// The note as Productive stores it (its rich-text editor saves a <ul> of <p> items).
+export const noteHtml = (bullets) => `<ul>${bullets.map((b) => `<li><p>${escapeHtml(b)}</p></li>`).join('')}</ul>`;
