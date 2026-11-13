@@ -1,0 +1,11 @@
+{
+  "name": "herdr-flow-map",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Herdr plugin: a live map of a long feature (tree, screens, layers) that every agent on it can update.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "bin": { "flow": "src/cli.js" },
+  "scripts": { "test": "node --test tests/*.test.js" },
+  "license": "MIT"
+}
