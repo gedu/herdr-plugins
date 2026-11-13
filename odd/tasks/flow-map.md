@@ -21,11 +21,11 @@ Design package (source of truth for visuals): `~/Downloads/herdr-flow-map` (PROM
 | --- | --- | --- | --- | --- |
 | T1 | S1 S2 | renderer core: tokens, width, grid, ANSI (truecolor/256), frame diff · delegated (parallel writer) | done | 05f4a44 |
 | T2 | S1 S2 | tree layout + header/footer: golden 01 (fixed pos, then automatic) · delegated | done | 05f4a44 |
-| T3 | S1 | screen-flow (02) and architecture (03) layouts | pending | |
-| T4 | S1 | detail (04), narrow vertical (05), empty (06), switcher (07) | pending | |
+| T3 | S1 | screen-flow (02) and architecture (03) layouts · delegated (parallel with T6) | done | see L8 |
+| T4 | S1 | detail (04), narrow vertical (05), empty (06), switcher (07) · delegated | done | see L8 |
 | T5 | S3 S4 S5 S8 | store + `flow` CLI, lock, ids · delegated (parallel writer, disjoint surface) | done | a6d3277, stale-lock fix |
-| T6 | S6 S9 | Herdr popup: keys, mouse probe, click/keys to set state, note, watch + redraw | pending | |
-| T7 | S7 | agent skill + setup install, README, config/keys.toml | pending | |
+| T6 | S6 S9 | Herdr popup: keys, mouse probe, click/keys to set state, note, watch + redraw · delegated | done (live watch unverified) | 6ace963 |
+| T7 | S7 | agent skill + setup install, README, config/keys.toml · inline | done | b1a6858 |
 
 ## Log
 
@@ -36,3 +36,4 @@ Design package (source of truth for visuals): `~/Downloads/herdr-flow-map` (PROM
 - L5 T5 done (delegated): store.js/ids.js/lock.js/cli.js, 20 tests pass; spot check: `flow new` → `purchases`, bad state exit 1. Note: Herdr tab numbers repeat across workspaces (tab_id like w1T:t3); store keeps number only for now.
 - L6 T1/T2 done (37 tests). Golden 01 vs SPEC differences kept per SPEC: googlePurchase label gap (§5), `web · noStore` 4 rows (no issues), notes word coloring not in SPEC, golden node widths come from fixture `w` (SPEC §3 rule gives narrower boxes; `w` stays an optional override). With §3 widths, edge labels get cut (`POST /orders/appleTrans…`): layout should widen sibling spacing so labels fit when the popup has room.
 - L7 Review (RDD, lenses resilience+reliability) of a6d3277 alone (whole range exceeded the lens budget): approved, acknowledged. Advisories: stale-lock steal race (fixed by rename-claim + test, RED observed on old code), cli.js:123-129 and lock.js:12-19 warnings (informational).
+- L8 T3/T4/T6/T7 done: 84 tests pass. Golden deviations kept per SPEC are commented in tests (blocked ■ tab markers, ▸ on 02/03, chip spacing, 05 needs 124 cols not 118). At 195 cols edge labels fit whole (wide layout first, then compact with …, then vertical). Frame ~0.1 ms at 195×50. fs.watch could not be verified inside the agent sandbox. Lock: stale reap now under a reap lock with age recheck (7377442), stress-tested 10×.
