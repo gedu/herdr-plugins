@@ -1,0 +1,20 @@
+id = "gedu.flow-map"
+name = "Flow map"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "A live map of a long feature (tree, screens, layers) that every agent working on it can update."
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "open"
+title = "Open the flow map"
+contexts = ["workspace"]
+command = ["node", "src/open.js"]
+
+[[panes]]
+id = "map"
+title = "Flow map"
+placement = "popup"
+width = "90%"
+height = "90%"
+command = ["node", "src/popup.js"]
