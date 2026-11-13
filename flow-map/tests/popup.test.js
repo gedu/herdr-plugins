@@ -266,3 +266,11 @@ test('the wheel scrolls away from the selection; moving with the keys brings it 
   assert.ok(r.row >= MAP_TOP && r.row + r.h <= 22 - 3, `the newly selected box is on screen (row ${r.row})`);
   assert.equal(app.state.follow, true);
 });
+
+test('switching flows after a wheel scroll follows the selection again', async () => {
+  const app = await open({ rows: 22 });
+  await app.handle({ type: 'mouse', kind: 'wheel', wheel: 'down', button: 64, col: 10, row: 10 });
+  assert.equal(app.state.follow, false);
+  await app.handle(key('tab'));
+  assert.equal(app.state.follow, true);
+});

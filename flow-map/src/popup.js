@@ -166,7 +166,7 @@ function switchTo(state, id) {
   const unseen = new Set(state.unseen);
   unseen.delete(id);
   const selected = back && flow.nodes?.some((n) => n.id === back.selected) ? back.selected : defaultSelected(flow);
-  return { ...state, memory, unseen, flowId: id, selected, scroll: back?.scroll ?? 0, view: 'map', menu: null, listIndex: state.order.indexOf(id) };
+  return { ...state, memory, unseen, flowId: id, selected, scroll: back?.scroll ?? 0, follow: true, view: 'map', menu: null, listIndex: state.order.indexOf(id) };
 }
 
 const step = (state, by) => {
@@ -314,7 +314,7 @@ export function removeFlow(state, id) {
   const next = { ...state, flows, order, unseen };
   if (state.flowId !== id) return next;
   const other = order[0] ?? null;
-  return { ...next, flowId: other, selected: defaultSelected(flows.get(other)), view: 'map', scroll: 0, menu: null };
+  return { ...next, flowId: other, selected: defaultSelected(flows.get(other)), view: 'map', scroll: 0, follow: true, menu: null };
 }
 
 // --- the controller: state + effects (store writes, opening links, quitting) ---
