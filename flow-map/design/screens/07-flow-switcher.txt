@@ -1,0 +1,44 @@
+  purchase-flow  5/9    checkout-ui  1/4    purchase-layers  4/9    refunds-v2  0/0                                      esc close the list
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+ ╭ flows ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+ │   flow                feature                               done    progress              agents                state                  │
+ │ ▸ purchase-flow       Purchases · free trial & restore      5/9     ━━━━━━━━━━━━━━━━━━━━  ◂ tab 2  ◂ tab 3      ■ 1 blocked            │
+ │   checkout-ui         Purchase screens                      1/4     ━━━━━━━━━━━━━━━━━━━━  ◂ tab 4               ● in progress          │
+ │   purchase-layers     Purchases · layers & dependencies     4/9     ━━━━━━━━━━━━━━━━━━━━  ◂ tab 5  ◂ tab 6      ■ 2 blocked            │
+ │   refunds-v2          Refunds                               0/0     ━━━━━━━━━━━━━━━━━━━━  no agent              ○ empty                │
+ ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+
+ ↑↓ choose   enter open   n next flow that needs attention   esc cancel
+
+
+
+ ── tab bar · 4 flows fit ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  purchase-flow  5/9    ● checkout-ui  1/4    ■ purchase-layers  4/9    refunds-v2  0/0
+
+ ● an agent updated this flow since you last looked    ■ a node in this flow is blocked
+
+
+ ── tab bar · 7 flows, collapsed ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ‹ 2   purchase-flow  5/9    ● checkout-ui  1/4    ■ purchase-layers  4/9    2 more ›
+
+ The active tab always stays visible. / opens the full list; tab and shift+tab step through flows in list order.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ✓ done   ● in progress   ○ pending   ■ blocked     ◂ agent here     #123 merged  #123 open
+ ↑↓ choose   enter open flow   n next needing attention   esc cancel list   q close

@@ -1,0 +1,44 @@
+  purchase-flow  5/9    checkout-ui  1/4    purchase-layers  4/9                                                tab next flow · / all flows
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ purchase-layers  Purchases · layers & dependencies                                                                          4/9 nodes done
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ now     ● screens, StorePort and the placeholder adapter are in progress · next: unblock #277
+ agents  ◂ tab 5 · placeholder adapter    ◂ tab 6 · screens
+
+                                                      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ UI                                                   ┃ ● Plan & checkout screens ┃
+                                                      ┃ #302 open                 ┃
+                                                      ┗━━━━━━━━━━━━━━━━━ ◂ tab 6 ━┛
+                                                                    │
+                                                                    ↓
+                                                      ╭───────────────────────────╮
+ domain                                               │ ✓ usePurchaseActions      │
+                                                      │ one flow, same screen     │
+                                                      ╰───────────────────────────╯
+                                                                    │
+                                    ╭───────────────────────────────┴───────────────────────────────╮
+                                    ↓                                                               ↓
+                      ╭───────────────────────────╮                                   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ports                │ ✓ CheckoutBrowser port    │                                   ┃ ● StorePort               ┃
+                      │ #278 merged               │                                   ┃ #273 merged · #277 open   ┃
+                      ╰───────────────────────────╯                                   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                                    │                                                               │
+                                    │ opens the checkout URL                       ╭────────────────┴──────────────╮
+                                    ↓                                              ↓                               ↓
+                      ╭───────────────────────────╮                   ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓     ╭─────────────────────────╮
+ adapters             │ ✓ web checkout adapter    │                   ┃ ● placeholder adapter   ┃     │ ■ expo-iap adapter      │
+                      │ #454 merged               │                   ┃ stand-in, no network    ┃     │ #277 open               │
+                      ╰───────────────────────────╯                   ┗━━━━━━━━━━━━━━━ ◂ tab 5 ━┛     ╰─────────────────────────╯
+                                    │                                                POST /orders/appleTransaction ┆
+                                    │ POST /wlc/checkout-token                         POST /orders/googlePurchase ┆
+                                    ↓                                                                              ↓
+                      ╭───────────────────────────╮                                                  ╭───────────────────────────╮
+ backend              │ ✓ /wlc/checkout-token     │                                                  │ ■ /orders/*               │
+                      │ endpoint available        │                                                  │ not on staging yet        │
+                      ╰───────────────────────────╯                                                  ╰───────────────────────────╯
+ ── notes ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Dependencies point down: screens → hook → ports → adapters → backend. The web adapter and its endpoint are done.
+ The placeholder keeps iOS and Android moving. ■ Blocked: the real adapter and /orders/* wait on the client (#277).
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ✓ done   ● in progress   ○ pending   ■ blocked     ┆ not wired yet     ◂ agent here     #123 merged  #123 open
+ ↑↓←→ move along dependencies   enter node detail   g open on GitHub   tab next flow   / flows   q close

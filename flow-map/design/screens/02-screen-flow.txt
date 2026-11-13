@@ -1,0 +1,44 @@
+  purchase-flow  5/9    checkout-ui  1/4    purchase-layers  4/9                                                tab next flow · / all flows
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ checkout-ui  Purchase screens · built one at a time                                                                       1/4 screens done
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ now     ● Plan picker: layout done, plan cards in progress · next: Checkout
+ agents  ◂ tab 4 · Plan picker
+
+
+  ✓ 1 built                           ● 2 building                        ○ 3 next                            ○ 4 later
+  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  ╭────────────────────────╮          ┏━━━━━━━━━━━━━━━━━━━━━━━━┓          ╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╮          ╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╮
+  │ ✓ Login                │          ┃ ● Plan picker          ┃          ┆ ○ Checkout             ┆          ┆ ○ Success              ┆
+  │ /login                 │          ┃ /plans                 ┃          ┆ /checkout              ┆          ┆ /success               ┆
+  │ #301 merged            │          ┃ #302 open              ┃          ┆ #303 open              ┆          ┆ no issue yet           ┆
+  ├────────────────────────┤          ┣━━━━━━━━━━━━━━━━━━━━━━━━┫          ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤          ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+  │ Welcome back           │signed in ┃ Choose your plan       ┃plan set  ┆ Order summary          ┆paid      ┆ ✓ Payment received     ┆
+  │ [ email            ]   │─────────→┃ ( ) Plan A             ┃─────────→┆ [ card number      ]   ┆─────────→┆ Plan is active         ┆
+  │ [ password         ]   │          ┃ (•) Plan B             ┃          ┆ [ expiry ]  [ cvc ]    ┆          ┆                        ┆
+  │ ( Sign in )            │          ┃ ( Continue )           ┃          ┆ ( Pay now )            ┆          ┆ ( Start )              ┆
+  ├────────────────────────┤          ┣━━━━━━━━━━━━━━━━━━━━━━━━┫          ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤          ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+  │ ✓ layout               │          ┃ ✓ layout               ┃          ┆ ○ layout               ┆          ┆ ○ layout               ┆
+  │ ✓ validation           │          ┃ ● plan cards           ┃          ┆ ○ card form            ┆          ┆ ○ deep link            ┆
+  │ ✓ auth call            │          ┃ ○ loading state        ┃          ┆ ○ payment call         ┆          ┆                        ┆
+  ╰────────────────────────╯          ┗━━━━━━━━━━━━━━ ◂ tab 4 ━┛          ╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╯          ╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╯
+                                      ▲ building now · tab 4
+
+
+
+
+
+
+
+
+
+
+ ── notes ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Login is merged (#301). The plan picker is being built now: layout is done, plan cards are in progress.
+ Checkout and Success follow one at a time, once the plan picker is merged.
+ Nothing is blocked.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ✓ done   ● in progress   ○ pending   ■ blocked     ◂ agent here     #123 merged  #123 open
+ ←→ move   enter screen detail   g open on GitHub   tab next flow   / flows   q close

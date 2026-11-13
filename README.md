@@ -8,6 +8,7 @@ Herdr plugins, one per folder. Each folder has its own `herdr-plugin.toml` and i
 | [`issue-card`](issue-card/) | A floating card for the GitHub issues an agent mentioned on screen. |
 | [`tab-names`](tab-names/) | Names each tab after its agent's worktree or branch, e.g. `frn · issue-436`. |
 | [`timesheet`](timesheet/) | Drafts the day's Productive time entry from your commits and PRs; publishes on confirm. |
+| [`flow-map`](flow-map/) | A live map of a long feature (tree, screens, layers) that every agent on it updates with `flow`. |
 
 ## Install
 
@@ -38,8 +39,8 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    ```sh
    git clone https://github.com/gedu/herdr-plugins.git ~/Documents/mine/herdr-plugins
    cd ~/Documents/mine/herdr-plugins
-   for p in pr-pane issue-card tab-names timesheet; do herdr plugin link "./$p"; done
-   herdr plugin list   # gedu.pr-pane, gedu.issue-card, gedu.tab-names, gedu.timesheet, all enabled
+   for p in pr-pane issue-card tab-names timesheet flow-map; do herdr plugin link "./$p"; done
+   herdr plugin list   # gedu.pr-pane, gedu.issue-card, gedu.tab-names, gedu.timesheet, gedu.flow-map, all enabled
    ```
 
    Without a clone, `herdr plugin install gedu/herdr-plugins/<folder>` works too, and
@@ -60,6 +61,7 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    | `prefix+i` | Issue card for the issues on screen |
    | `prefix+d` | hunk diff of the focused pane's folder |
    | `prefix+t` | Draft and publish the day's Productive time entry |
+   | `prefix+m` | Flow map of the feature agents are working on |
 
 4. **Timesheet token.** The person creates a Productive API token (Settings → API integrations)
    and runs this themselves, so the token never passes through an agent or the repo:
@@ -70,6 +72,12 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
 
    It asks for the token hidden, checks it against Productive, and saves it with mode 600.
    Details: [timesheet/README.md](timesheet/README.md#setup).
+
+5. **Flow map.** Put `flow` on the PATH and give agents the skill (symlinks into this checkout):
+
+   ```sh
+   cd ~/Documents/mine/herdr-plugins/flow-map && npm run setup
+   ```
 
 ### Where the config lives
 

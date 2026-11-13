@@ -1,0 +1,44 @@
+  purchase-flow  5/9    checkout-ui  1/4    purchase-layers  4/9                                                tab next flow · / all flows
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ purchase-flow  Purchases · free trial & restore                                                                             5/9 nodes done
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ now     ● iOS and Android run on a placeholder adapter · next: unblock #277
+ agents  ◂ tab 2 · Android    ◂ tab 3 · iOS
+                                              ╭─────────────────────────────╮
+                                              │ ✓ usePurchaseActions        │
+                                              │ one flow, same screen       │
+                                              ╰─────────────────────────────╯
+                                                             │
+                       ╭─────────────────────────────────────┴─────────────────────────────────────╮
+                       │ Start on the web                                                          │ Start my free trial / Restore
+                       ↓                                                                           ↓
+         ╭───────────────────────────╮                                             ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+         │ ✓ CheckoutBrowser port    │                                             ┃ ● StorePort                   ┃
+         │ opens the checkout page   │                                             ┃ restore · start free trial    ┃
+         │ #278 merged               │                                             ┃ #273 merged  #277 open        ┃
+         ╰───────────────────────────╯                                             ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                       │ POST /wlc/checkout-token                                                  │
+            ╭──────────┴───────────╮                            ╭──────────────────────────────────┼────────────────────────────╮
+            │                      │                            │ POST /orders/appleTransaction    │ POST /orders/googlePurchase│
+            ↓                      ↓                            ↓                                  ↓                            ↓
+  ╭───────────────────╮  ╭───────────────────╮  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓  ╭───────────────────╮
+  │ ✓ web             │  │ ✓ native          │  ┃ ● iOS · StoreKit 2            ┃▸ ┃ ● Android · Play Billing      ┃  │ ✓ web · noStore   │
+  │ location.assign   │  │ Linking.openURL   │  ┃ signedTransaction             ┃  ┃ purchaseToken                 ┃  │ no store on web   │
+  │ #454 merged       │  │ #278 merged       │  ┃ #277 open                     ┃  ┃ #277 open                     ┃  │                   │
+  ╰───────────────────╯  ╰───────────────────╯  ┗━━━━━━━━━━━━━━━━━━━━━ ◂ tab 3 ━┛  ┗━━━━━━━━━━━━━━━━━━━━━ ◂ tab 2 ━┛  ╰───────────────────╯
+                                                                │                                  │
+                                                                ╰────────────────┬─────────────────╯
+                                                                                 ↓ replaces the placeholder
+                                                                 ╭───────────────────────────────╮
+                                                                 │ ■ expo-iap adapter            │
+                                                                 │ blocked by the client         │
+                                                                 │ #277 open                     │
+                                                                 ╰───────────────────────────────╯
+ ── notes ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Web is built and merged: the Braintree checkout opens through the CheckoutBrowser port (#278, #454).
+ StorePort (#273) is merged. iOS and Android both run on a placeholder adapter because the stores differ:
+ signedTransaction vs purchaseToken, a different endpoint, a different storefront format.
+ ■ Blocked: the real adapter #277 (expo-iap) waits on the client for store products and the /orders/* endpoints on staging.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ✓ done   ● in progress   ○ pending   ■ blocked     ◂ agent here     #123 merged  #123 open
+ ↑↓←→ move   enter node detail   g open on GitHub   tab next flow   / flows   q close
