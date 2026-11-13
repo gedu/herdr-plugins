@@ -37,3 +37,9 @@ key = "prefix+t"
 type = "plugin_action"
 command = "gedu.timesheet.open"
 description = "log today's time in Productive"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "gedu.flow-map.open"
+description = "flow map of the current feature"

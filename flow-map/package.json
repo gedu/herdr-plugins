@@ -4,8 +4,15 @@
   "private": true,
   "description": "Herdr plugin: a live map of a long feature (tree, screens, layers) that every agent on it can update.",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "bin": { "flow": "src/cli.js" },
-  "scripts": { "test": "node --test tests/*.test.js" },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "flow": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "setup": "node src/setup.js"
+  },
   "license": "MIT"
 }
