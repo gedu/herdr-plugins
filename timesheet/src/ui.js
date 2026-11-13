@@ -27,6 +27,18 @@ function dayLabel(date, today) {
 }
 
 const KEYS = ' ↵ publish · e edit · ←→ day · r redraft · q close';
+const EDIT_KEYS = ' type · ↵ new bullet · ↑↓ bullet · esc done · ctrl+c cancel';
+
+// The cursor is the cell under it drawn inverted (a space past the end). A line wider than
+// `room` shows the part around the cursor.
+const CURSOR_ON = '\x1b[7m';
+function withCursor(line, col, room) {
+  const cs = [...line];
+  const start = Math.max(0, col - Math.max(1, room - 1));
+  const under = cs[col] ?? ' ';
+  const after = cs.slice(col + 1, start + room).join('');
+  return `${cs.slice(start, col).join('')}${CURSOR_ON}${under}\x1b[27m${after}`;
+}
 
 export function screen(state, width) {
   const w = Math.max(20, width);
@@ -50,6 +62,11 @@ export function screen(state, width) {
     const done = date === state.today ? 'Today is already logged · nothing to do' : 'Already logged';
     lines.push(` ${GREEN}✓ ${done}${RESET}${GRAY} · ←→ day · q close${RESET}`);
     return lines.map((l) => fit(l, w));
+  }
+  if (state.edit) {
+    lines.push(...state.edit.lines.map((l, i) => ` - ${i === state.edit.row ? withCursor(l, state.edit.col, w - 4) : l}`), '');
+    lines.push(`${GRAY}${EDIT_KEYS}${RESET}`);
+    return lines.map((l) => (l.includes(CURSOR_ON) ? l : fit(l, w)));
   }
   const draft = state.drafts?.[date];
   if (!draft || draft.status === 'drafting') lines.push(` ${LOGO} Drafting ${dots(state.frame ?? 0)}`);

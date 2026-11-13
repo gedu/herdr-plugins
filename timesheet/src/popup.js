@@ -1,12 +1,9 @@
 // The popup process: find weekdays without an entry, draft each one, publish on confirm.
-// Keys: enter publish, e edit in $EDITOR, left/right change day, r redraft, q or esc close.
-import { spawnSync } from 'node:child_process';
-import { writeFileSync, readFileSync, mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+// Keys: enter publish, e edit the bullets in place, left/right change day, r redraft, q or esc close.
 import { loadConfig, evidence, draft } from './sources.js';
 import { productive } from './productive.js';
-import { localDate, weekdaysBetween, missingDays, startIndex, bulletsFromNote, noteFromBullets, cleanBullets } from './day.js';
+import { localDate, weekdaysBetween, missingDays, startIndex, bulletsFromNote } from './day.js';
+import { startEdit, editKey } from './editor.js';
 import { publishDay } from './publish.js';
 import { screen } from './ui.js';
 
@@ -71,18 +68,23 @@ async function redraft(date) {
   draw();
 }
 
+// `e` edits the bullets inside the popup; esc keeps the result, ctrl+c drops it.
 function edit(date) {
-  const current = state.drafts[date]?.bullets ?? [];
-  const dir = mkdtempSync(join(tmpdir(), 'timesheet-'));
-  const file = join(dir, `${date}.md`);
-  writeFileSync(file, `${noteFromBullets(current)}\n`);
-  leave();
-  spawnSync(process.env.VISUAL || process.env.EDITOR || 'vi', [file], { stdio: 'inherit' });
-  const bullets = cleanBullets(bulletsFromNote(readFileSync(file, 'utf8')));
-  rmSync(dir, { recursive: true, force: true });
-  generation[date] = (generation[date] ?? 0) + 1;
-  state.drafts[date] = { status: 'ready', bullets };
-  enter();
+  state.edit = startEdit(state.drafts[date]?.bullets ?? []);
+  state.editDate = date;
+  out.write('\x1b[?25l');
+  draw();
+}
+
+function editInput(key) {
+  const { ed, done } = editKey(state.edit, key);
+  if (!done) { state.edit = ed; return draw(); }
+  const date = state.editDate;
+  state.edit = null;
+  if (done.bullets) {
+    generation[date] = (generation[date] ?? 0) + 1;
+    state.drafts[date] = { status: 'ready', bullets: done.bullets };
+  }
   draw();
 }
 
@@ -107,6 +109,7 @@ enter();
 draw();
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', (key) => {
+  if (state.edit) return editInput(key);
   if (key === 'q' || key === '\x1b' || key === '\x03') return quit();
   if (state.phase === 'publishing' || state.phase === 'loading' || state.phase === 'setup') return;
   // After a publish (or a failed one) the next key only dismisses the message, so a repeated
