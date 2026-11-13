@@ -40,7 +40,7 @@ at most once a day. It runs on tab switches and makes one Productive request, no
 | Key | Does |
 | --- | --- |
 | `enter` | Publish the shown day |
-| `e` | Edit the bullets in `$VISUAL` / `$EDITOR` (one `- bullet` per line) |
+| `e` | Edit the bullets right in the popup: type, `↵` new bullet, `↑↓` bullet, `⌫` delete, `esc` done, `ctrl+c` cancel (4 bullets max) |
 | `←` `→` | Pick another working day of the last 14 (logged days show their note, read-only) |
 | `r` | Draft again |
 | `q`, `esc` | Close |
