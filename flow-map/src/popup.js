@@ -213,6 +213,9 @@ function onMouse(state, ev, ctx) {
     return none(id && id !== state.flowId ? switchTo(state, id) : state);
   }
   if (state.view !== 'map') return none(state);
+  const flow = activeFlow(state);
+  const noted = flow?.nodes?.length && typeof R.hitNote === 'function' ? R.hitNote(flow, viewOpts(state, ctx), ev.col, ev.row) : null;
+  if (noted) return none({ ...state, selected: noted, view: 'detail' });
   const id = hitNode(state, ctx, ev.col, ev.row);
   if (!id) return none(state);
   if (id === state.selected) return none(openMenuOn(state, ctx));
@@ -327,8 +330,10 @@ export function createApp({ cols = 80, rows = 24, flowId, opener = openUrl, onQu
         return what;
       }, { who: 'you' });
       state = applyFlow(state, flow, ctx());
+      return true;
     } catch (error) {
       state = { ...state, message: `✗ ${error.message}` };
+      return false;
     }
   }
 
@@ -338,9 +343,12 @@ export function createApp({ cols = 80, rows = 24, flowId, opener = openUrl, onQu
       if (e.state === 'blocked' && e.reason) node.blocked_by = e.reason;
       if (e.state !== 'blocked') delete node.blocked_by;
     }, `${e.node}: ${label(e.state)}${e.reason ? ` (${e.reason})` : ''}`),
-    note: (e) => writeNode(e, (node) => {
-      node.notes = [e.text, ...(Array.isArray(node.notes) ? node.notes : [])].slice(0, NODE_NOTES);
-    }, `note on ${e.node}: ${e.text}`),
+    note: async (e) => {
+      const saved = await writeNode(e, (node) => {
+        node.notes = [e.text, ...(Array.isArray(node.notes) ? node.notes : [])].slice(0, NODE_NOTES);
+      }, `note on ${e.node}: ${e.text}`);
+      if (saved) state = { ...state, message: '✎ note saved · enter or click ✎ on the box to read notes' };
+    },
     open: (e) => { try { opener(e.url); } catch (error) { state = { ...state, message: `✗ ${error.message}` }; } },
     quit: () => onQuit(),
   };

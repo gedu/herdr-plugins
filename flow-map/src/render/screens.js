@@ -2,7 +2,7 @@
 import { glyphs, layout as L, states, stateOf } from './tokens.js';
 import { box, fill, hline, put, text } from './grid.js';
 import { chips } from './issues.js';
-import { detailOf, drawAgentTag, drawChips, TITLE_FG } from './node.js';
+import { detailOf, drawAgentTag, drawChips, drawNoteBadge, noteBadgeAt, TITLE_FG } from './node.js';
 import { pieces } from './frame.js';
 
 export const SCREEN_W = 26;
@@ -60,6 +60,7 @@ function drawScreen(g, node, r, { selected, agents }) {
   }
   (node.wireframe ?? []).slice(0, WIRE_ROWS).forEach((line, i) => text(g, x, r.row + 5 + i, line, { fg: 'muted' }, inner));
   const textFg = TITLE_FG[state];
+  drawNoteBadge(g, node, r);
   (node.tasks ?? []).slice(0, TASK_ROWS).forEach((t, i) => {
     const ts = stateKey(t.state);
     pieces(g, x, r.row + 6 + WIRE_ROWS + i, [
@@ -67,7 +68,7 @@ function drawScreen(g, node, r, { selected, agents }) {
       [` ${t.text ?? ''}`, { fg: ts === 'pending' ? 'muted' : textFg }],
     ], x + inner);
   });
-  drawAgentTag(g, r, agents);
+  drawAgentTag(g, r, agents, noteBadgeAt(node, r)?.w ?? 0);
   if (selected) put(g, r.col - 2, r.row + 1, glyphs.selected_marker, { fg: 'accent' });
 }
 

@@ -34,15 +34,34 @@ export function drawNode(g, node, rect, { selected = false, agents = [] } = {}) 
   const detail = detailOf(node);
   if (detail) text(g, col + 2, r++, detail, { fg: state === 'blocked' ? 'blocked' : 'muted' }, inner);
   if (node.issues?.length) drawChips(g, col + 2, r, chips(node.issues), inner);
-  drawAgentTag(g, rect, agents);
+  drawNoteBadge(g, node, rect);
+  drawAgentTag(g, rect, agents, noteBadgeAt(node, rect)?.w ?? 0);
   if (selected) put(g, col - 2, row + 1, glyphs.selected_marker, { fg: 'accent' });
 }
 
-// `◂ tab N` on the bottom border, right-aligned; dropped when the box is too narrow (SPEC §2).
-export function drawAgentTag(g, { col, row, w, h }, agents) {
+// `◂ tab N` on the bottom border, right-aligned; dropped when the box is too narrow (SPEC §2),
+// counting the note badge (`left` columns) on the same border.
+export function drawAgentTag(g, { col, row, w, h }, agents, left = 0) {
   const tag = agentTag(agents);
   const tagW = strWidth(tag);
-  if (tag && w >= tagW + 6) text(g, col + w - 4 - tagW, row + h - 1, ` ${tag} `, { fg: 'accent' });
+  if (tag && w >= tagW + 6 + (left ? left + 1 : 0)) text(g, col + w - 4 - tagW, row + h - 1, ` ${tag} `, { fg: 'accent' });
+}
+
+export const noteCount = (node) => (Array.isArray(node.notes) ? node.notes.length : 0);
+
+// ` ✎ N ` on the bottom border, left-aligned: the box has notes (read them in its detail).
+// Returns where it sits ({col, row, w}) so a click on it can open them; null when absent.
+export function noteBadgeAt(node, { col, row, w, h }) {
+  const n = noteCount(node);
+  if (!n) return null;
+  const badge = ` ${glyphs.note} ${n} `;
+  const bw = strWidth(badge);
+  return w >= bw + 4 ? { col: col + 2, row: row + h - 1, w: bw, text: badge } : null;
+}
+
+export function drawNoteBadge(g, node, rect) {
+  const b = noteBadgeAt(node, rect);
+  if (b) text(g, b.col, b.row, b.text, { fg: 'accent' });
 }
 
 export { TITLE_FG };

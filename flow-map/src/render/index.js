@@ -13,6 +13,7 @@ import { layoutVertical, drawVerticalRow, selectionPath, VERTICAL_TOP } from './
 import { drawDetail, detailKeys } from './detail.js';
 import { drawEmpty } from './empty.js';
 import { drawList } from './list.js';
+import { noteBadgeAt } from './node.js';
 
 const MAP_TOP = L.header_rows;
 
@@ -124,6 +125,18 @@ export function hitTest(flow, opts, col, row) {
   const { rects, region } = layout(flow, opts);
   if (row < region.top || row >= region.end) return null;
   for (const [id, r] of rects) if (col >= r.col && col < r.col + r.w && row >= r.row && row < r.row + r.h) return id;
+  return null;
+}
+
+// The node whose ` ✎ N ` badge is under (col, row), boxed views only; null elsewhere.
+export function hitNote(flow, opts, col, row) {
+  const { kind, rects, region } = layout(flow, opts);
+  if (kind === 'vertical' || row < region.top || row >= region.end) return null;
+  for (const node of flow.nodes ?? []) {
+    const r = rects.get(node.id);
+    const b = r && noteBadgeAt(node, r);
+    if (b && row === b.row && col >= b.col && col < b.col + b.w) return node.id;
+  }
   return null;
 }
 

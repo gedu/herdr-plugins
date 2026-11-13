@@ -214,3 +214,38 @@ test('g opens a URL ref, and only a URL', async () => {
   await app.handle(key('char', 'g'));
   assert.deepEqual(opened, ['https://example.com/T-1']);
 });
+
+async function addNote(app, text) {
+  await app.handle(key('char', 's'));
+  await app.handle(key('char', 'n'));
+  for (const ev of chars(text)) await app.handle(ev);
+  await app.handle(key('enter'));
+}
+
+test('a box with notes shows ✎ N on its bottom border, and saving says where to read it', async () => {
+  const app = await open();
+  await clickNode(app, 'ios');
+  const r = nodeRect(app.state, app.ctx(), 'ios');
+  assert.doesNotMatch(rowText(app.frame(), r.row + r.h - 1), /✎/);
+  await addNote(app, 'check the sandbox');
+  assert.match(app.state.message, /note saved/);
+  const bottom = rowText(app.frame(), r.row + r.h - 1).slice(r.col, r.col + r.w);
+  assert.match(bottom, /✎ 1/);
+  await addNote(app, 'second one');
+  assert.match(rowText(app.frame(), r.row + r.h - 1).slice(r.col, r.col + r.w), /✎ 2/);
+});
+
+test('clicking ✎ N opens that box’s detail with its notes', async () => {
+  const app = await open();
+  await clickNode(app, 'ios');
+  await addNote(app, 'check the sandbox');
+  await clickNode(app, 'android');
+  const r = nodeRect(app.state, app.ctx(), 'ios');
+  const col = r.col + rowText(app.frame(), r.row + r.h - 1).slice(r.col).indexOf('✎');
+  await app.handle({ type: 'mouse', kind: 'press', button: 0, col, row: r.row + r.h - 1 });
+  assert.equal(app.state.selected, 'ios');
+  assert.equal(app.state.view, 'detail');
+  assert.equal(app.state.menu, null);
+  const text = Array.from({ length: ROWS }, (_, i) => rowText(app.frame(), i)).join('\n');
+  assert.match(text, /check the sandbox/);
+});

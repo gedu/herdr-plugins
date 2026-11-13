@@ -36,6 +36,7 @@ list instead of scrolling sideways.
 | `↑↓←→` | Move between boxes |
 | `enter` | Box detail (refs, edges, agent, notes, history) |
 | `s`, or click the selected box | Menu: done / in progress / pending / blocked (asks why) / add note |
+| `✎ N` on a box, click it | That box has N notes: opens its detail, where the notes are |
 | `g` | Open the box's ref when it is a URL (or `#n` when the flow has a `repo`) |
 | `tab` `shift+tab`, click a tab | Next / previous flow |
 | `/` | All flows; `n` jumps to the next one that needs attention |

@@ -5,6 +5,7 @@ import { fill, put, text } from './grid.js';
 import { chips, CHIP_GAP } from './issues.js';
 import { graph } from './tree.js';
 import { pieces, piecesWidth, STATE_FG } from './frame.js';
+import { noteCount } from './node.js';
 
 export const VERTICAL_TOP = 8;
 const FIRST_COL = 3;
@@ -124,6 +125,7 @@ export function drawVerticalRow(g, row, r, lay, { selected, path, agentsByNode }
   const titleFg = state === 'blocked' ? 'blocked' : onPath ? 'emphasis' : state === 'pending' ? 'muted' : 'text';
   const agents = agentsByNode.get(r.id) ?? [];
   const tag = agents.flatMap((a, i) => [[i ? '  ' : '   '], [glyphs.agent_tag, { fg: 'accent' }], [` tab ${a.tab}`, { fg: 'text' }]]);
+  if (noteCount(node)) tag.push(['   '], [`${glyphs.note} ${noteCount(node)}`, { fg: 'accent' }]);
   const room = sideCol - 2 - (r.col + 2);
   const titleW = Math.max(1, Math.min(strWidth(node.title ?? ''), room - piecesWidth(tag)));
   const c = r.col + 2 + text(g, r.col + 2, row, node.title ?? '', { fg: titleFg, bold: onPath && state !== 'blocked' }, titleW);
