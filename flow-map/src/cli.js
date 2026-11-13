@@ -2,7 +2,7 @@
 // `flow`: how agents report progress on a shared flow map. Never edit the JSON by hand.
 import { execFile } from 'node:child_process';
 import { parseArgs } from 'node:util';
-import { create, flowsDir, LAYOUTS, list, load, STATES, update } from './store.js';
+import { addNodeNote, create, flowsDir, LAYOUTS, list, load, STATES, update } from './store.js';
 
 const HELP = `flow: a live map of a long feature, shared by every agent working on it.
 
@@ -10,7 +10,7 @@ const HELP = `flow: a live map of a long feature, shared by every agent working 
   flow node <id> <node> [--title t] [--detail d] [--state s] [--parent p [--label l]]
             [--ref 277|#277|PROJ-12|<url>[:state]]... [--blocked "<reason>"] [--layer L] [--remove]
   flow edge <id> <from> <to> [--label l] [--dashed]
-  flow note <id> "<text>"          keeps the last 5 notes
+  flow note <id> "<text>" [--node <node>]   keeps the last 5 notes (of the flow, or of that node)
   flow now  <id> "<text>"          what is happening right now
   flow here <id> <node> [--name n] this agent (its Herdr tab) works on <node>
   flow show <id>                   short text summary
@@ -95,6 +95,7 @@ function show(flow) {
     const refs = (n.issues ?? []).map((r) => `${refKey(r)}${r.state && r.state !== 'open' ? ` ${r.state}` : ''}`).join(', ');
     const tail = [refs, n.state === 'blocked' && n.blocked_by ? `blocked: ${n.blocked_by}` : ''].filter(Boolean).join(' · ');
     out.push(`${GLYPH[n.state] ?? '?'} ${n.id.padEnd(w)}  ${tail ? (n.title ?? '').padEnd(tw) + '  ' + tail : n.title ?? ''}`.trimEnd());
+    for (const note of Array.isArray(n.notes) ? n.notes : []) out.push(`  ✎ ${note}`);
   }
   for (const a of flow.agents ?? []) out.push(`agent: ${a.tab == null ? '?' : `tab ${a.tab}`} → ${a.node}${a.name ? ` (${a.name})` : ''}`);
   if (flow.now) out.push(`now: ${flow.now}`);
@@ -165,7 +166,14 @@ const commands = {
   },
 
   async note(argv) {
-    const { pos } = parse(argv, {}, 2);
+    const { pos, opt } = parse(argv, { node: { type: 'string' } }, 2);
+    if (opt.node != null) {
+      await update(pos[0], (flow) => {
+        addNodeNote(flow, opt.node, pos[1]);
+        return `note on ${opt.node}: ${pos[1]}`;
+      }, { who: await who() });
+      return `${pos[0]}: note added on ${opt.node}`;
+    }
     await update(pos[0], (flow) => {
       flow.notes = [...(flow.notes ?? []), pos[1]].slice(-5);
       return `note: ${pos[1]}`;

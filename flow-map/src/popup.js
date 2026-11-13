@@ -16,7 +16,6 @@ import { createParser } from './input.js';
 import { openMenu, menuKey, menuClick, drawMenu, ITEMS } from './menu.js';
 
 const WHEEL_STEP = 3;
-const NODE_NOTES = 5;
 const EMPTY = { id: '', feature: 'No flows yet: ask an agent to run `flow new`', layout: 'tree', now: '', agents: [], nodes: [], edges: [], notes: [] };
 
 export const activeFlow = (state) => state.flows.get(state.flowId) ?? null;
@@ -334,7 +333,7 @@ export function createApp({ cols = 80, rows = 24, flowId, opener = openUrl, onQu
       const flow = await store.update(e.flowId, (f) => {
         const node = f.nodes?.find((n) => n.id === e.node);
         if (!node) throw new Error(`node "${e.node}" is gone`);
-        change(node);
+        change(node, f);
         return what;
       }, { who: 'you' });
       state = applyFlow(state, flow, ctx());
@@ -352,9 +351,7 @@ export function createApp({ cols = 80, rows = 24, flowId, opener = openUrl, onQu
       if (e.state !== 'blocked') delete node.blocked_by;
     }, `${e.node}: ${label(e.state)}${e.reason ? ` (${e.reason})` : ''}`),
     note: async (e) => {
-      const saved = await writeNode(e, (node) => {
-        node.notes = [e.text, ...(Array.isArray(node.notes) ? node.notes : [])].slice(0, NODE_NOTES);
-      }, `note on ${e.node}: ${e.text}`);
+      const saved = await writeNode(e, (node, f) => store.addNodeNote(f, node.id, e.text), `note on ${e.node}: ${e.text}`);
       if (saved) state = { ...state, message: '✎ note saved · enter or click ✎ on the box to read notes' };
     },
     open: (e) => { try { opener(e.url); } catch (error) { state = { ...state, message: `✗ ${error.message}` }; } },

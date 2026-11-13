@@ -10,6 +10,17 @@ export const STATES = ['done', 'in_progress', 'pending', 'blocked'];
 export const LAYOUTS = ['tree', 'screens', 'layers'];
 const HISTORY = 50;
 
+export const NODE_NOTES = 5;
+
+// A note on one node: newest first, the last NODE_NOTES kept. The popup and `flow note --node`
+// both write through this, so the two never disagree on order or length.
+export function addNodeNote(flow, nodeId, text) {
+  const node = flow.nodes?.find((n) => n.id === nodeId);
+  if (!node) throw new Error(`no node "${nodeId}" in flow "${flow.id}"`);
+  node.notes = [text, ...(Array.isArray(node.notes) ? node.notes : [])].slice(0, NODE_NOTES);
+  return node;
+}
+
 export const flowsDir = () => process.env.HERDR_FLOWS_DIR || join(homedir(), '.local', 'state', 'herdr-flows');
 const fileOf = (id) => join(flowsDir(), `${id}.json`);
 

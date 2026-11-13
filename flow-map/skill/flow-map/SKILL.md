@@ -23,7 +23,7 @@ flow show <id>      # unknown id? `flow list`. No map yet and asked for one? `fl
 | It has a ticket/PR | `--ref 277` or `--ref 277:merged`, `--ref PROJ-12`, `--ref <url>` (any tracker) |
 | It is done | `flow node <id> <node> --state done` |
 | It is blocked | `flow node <id> <node> --blocked "why, in a few words"` |
-| Something worth knowing | `flow note <id> "plain sentence"` |
+| Something worth knowing | `flow note <id> "plain sentence"` (about one node: add `--node <node>`) |
 | The focus changes | `flow now <id> "what happens now · next: …"` |
 
 Rules: node ids are short kebab-case (`ios`, `store-port`); titles under ~25 chars, details one

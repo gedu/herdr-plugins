@@ -26,7 +26,8 @@ list instead of scrolling sideways.
 1. Ask an agent to start a map, or run `flow new "Purchases · free trial & restore"`. It prints a
    short id (`purchases`).
 2. Tell every agent on the feature: "you work on the `purchases` flow". With the skill installed
-   they keep it current on their own (`flow here`, `flow node … --state done`, `flow note`).
+   they keep it current on their own (`flow here`, `flow node … --state done`, `flow note`,
+   `flow note … --node <node>` for a note on one box).
 3. Open it with `prefix+m`.
 
 ## Keys and mouse
@@ -40,7 +41,7 @@ list instead of scrolling sideways.
 | `g` | Open the box's ref when it is a URL (or `#n` when the flow has a `repo`) |
 | `tab` `shift+tab`, click a tab | Next / previous flow |
 | `/` | All flows; `n` jumps to the next one that needs attention |
-| wheel | Scroll the map |
+| wheel | Scroll the map freely; the next arrow key scrolls back to the selection |
 | `esc`, `q` | Back, close |
 
 ## Data

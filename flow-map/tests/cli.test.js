@@ -200,3 +200,28 @@ test('list and help', async () => {
   for (const cmd of ['new', 'node', 'edge', 'note', 'now', 'here', 'show', 'list']) assert.match(h.stdout, new RegExp(`flow ${cmd}`));
   assert.equal((await flow([])).code, 0);
 });
+
+test('note --node puts the note on that node (newest first, 5 kept), not on the flow', async () => {
+  await flow(['new', 'Box notes', '--id', 'b']);
+  await flow(['node', 'b', 'ios', '--title', 'iOS']);
+  for (let i = 1; i <= 6; i++) {
+    const r = await flow(['note', 'b', `n${i}`, '--node', 'ios']);
+    assert.equal(r.code, 0);
+    assert.equal(r.stdout.trim(), 'b: note added on ios');
+  }
+  const f = await read('b');
+  assert.deepEqual(f.nodes.find((n) => n.id === 'ios').notes, ['n6', 'n5', 'n4', 'n3', 'n2']);
+  assert.deepEqual(f.notes, []);
+  assert.equal(f.history.at(-1).what, 'note on ios: n6');
+  const show = await flow(['show', 'b']);
+  assert.match(show.stdout, /^○ ios +iOS\n {2}✎ n6\n {2}✎ n5/m);
+});
+
+test('note --node on a missing node fails and leaves the file unchanged', async () => {
+  await flow(['new', 'Box notes', '--id', 'm']);
+  const before = await read('m');
+  const r = await flow(['note', 'm', 'hi', '--node', 'ghost']);
+  assert.equal(r.code, 1);
+  assert.match(r.stderr, /no node "ghost" in flow "m"/);
+  assert.deepEqual(await read('m'), before);
+});
