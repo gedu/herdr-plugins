@@ -1,0 +1,34 @@
+{
+  "id": "checkout-ui",
+  "feature": "Purchase screens · built one at a time",
+  "layout": "screens",
+  "updated": "2026-11-13T11:48:00+01:00",
+  "now": "Plan picker: layout done, plan cards in progress · next: Checkout",
+  "agents": [{ "tab": 4, "node": "plan-picker", "name": "Plan picker" }],
+  "nodes": [
+    { "id": "login", "title": "Login", "detail": "/login", "state": "done", "issues": [{ "n": 301, "state": "merged" }],
+      "wireframe": ["Welcome back", "[ email            ]", "[ password         ]", "( Sign in )"],
+      "tasks": [{ "text": "layout", "state": "done" }, { "text": "validation", "state": "done" }, { "text": "auth call", "state": "done" }] },
+    { "id": "plan-picker", "title": "Plan picker", "detail": "/plans", "state": "in_progress", "issues": [{ "n": 302, "state": "open" }],
+      "wireframe": ["Choose your plan", "( ) Plan A", "(•) Plan B", "( Continue )"],
+      "tasks": [{ "text": "layout", "state": "done" }, { "text": "plan cards", "state": "in_progress" }, { "text": "loading state", "state": "pending" }] },
+    { "id": "checkout", "title": "Checkout", "detail": "/checkout", "state": "pending", "issues": [{ "n": 303, "state": "open" }],
+      "wireframe": ["Order summary", "[ card number      ]", "[ expiry ]  [ cvc ]", "( Pay now )"],
+      "tasks": [{ "text": "layout", "state": "pending" }, { "text": "card form", "state": "pending" }, { "text": "payment call", "state": "pending" }] },
+    { "id": "success", "title": "Success", "detail": "/success", "state": "pending", "issues": [],
+      "wireframe": ["✓ Payment received", "Plan is active", "", "( Start )"],
+      "tasks": [{ "text": "layout", "state": "pending" }, { "text": "deep link", "state": "pending" }] }
+  ],
+  "edges": [
+    { "from": "login", "to": "plan-picker", "label": "signed in" },
+    { "from": "plan-picker", "to": "checkout", "label": "plan set" },
+    { "from": "checkout", "to": "success", "label": "paid" }
+  ],
+  "notes": [
+    "Login is merged (#301). The plan picker is being built now: layout is done, plan cards are in progress.",
+    "Checkout and Success follow one at a time, once the plan picker is merged.",
+    "Nothing is blocked."
+  ],
+  "selected": "plan-picker",
+  "golden": "screens/02-screen-flow.txt"
+}

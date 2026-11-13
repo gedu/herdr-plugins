@@ -1,0 +1,44 @@
+  purchase-flow  5/9    checkout-ui  1/4    purchase-layers  4/9                                                tab next flow · / all flows
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ purchase-flow  Purchases · free trial & restore                                                                             5/9 nodes done
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ now     ● iOS and Android run on a placeholder adapter · next: unblock #277
+ agents  ◂ tab 2 · Android    ◂ tab 3 · iOS
+
+ usePurchaseActions › StorePort › Android · Play Billing
+
+ ● Android · Play Billing                                                                                                      in progress
+ purchaseToken · its own endpoint · its own storefront format
+
+ ── issues ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ▸ #277   open     Real adapter (expo-iap)                 ■ blocked by the client: store products and /orders/* are not on staging
+   #273   merged   StorePort and placeholder adapters
+
+ ── edges ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ in   ← StorePort · restore, start free trial
+ out  → POST /orders/googlePurchase · placeholder adapter for now: no network call
+
+ ── agent ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ◂ tab 2  working on this node · last activity 4 min ago
+
+ ── notes ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Android returns a purchaseToken, not a signedTransaction, so it has its own endpoint and its own storefront format.
+ It runs on the placeholder adapter until #277 (expo-iap) lands.
+
+
+ ── history ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ 12:01   tab 2   added a note about purchaseToken
+ 11:40   tab 3   linked #277 to iOS and Android
+ 11:12   tab 2   state → in progress
+ 10:30   you     created the node
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ ✓ done   ● in progress   ○ pending   ■ blocked     ◂ agent here     #123 merged  #123 open
+ esc back to the map   ↑↓ choose issue   g open #277 on GitHub   ←→ previous / next node   q close

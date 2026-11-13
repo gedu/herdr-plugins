@@ -1,0 +1,46 @@
+{
+  "id": "purchase-layers",
+  "feature": "Purchases · layers & dependencies",
+  "layout": "layers",
+  "updated": "2026-11-13T11:30:00+01:00",
+  "now": "screens, StorePort and the placeholder adapter are in progress · next: unblock #277",
+  "agents": [
+    { "tab": 5, "node": "placeholder", "name": "placeholder adapter" },
+    { "tab": 6, "node": "screens", "name": "screens" }
+  ],
+  "layers": [
+    { "id": "ui", "label": "UI" },
+    { "id": "domain", "label": "domain" },
+    { "id": "ports", "label": "ports" },
+    { "id": "adapters", "label": "adapters" },
+    { "id": "backend", "label": "backend" }
+  ],
+  "nodes": [
+    { "id": "screens", "layer": "ui", "title": "Plan & checkout screens", "state": "in_progress", "issues": [{ "n": 302, "state": "open" }] },
+    { "id": "hook", "layer": "domain", "title": "usePurchaseActions", "detail": "one flow, same screen", "state": "done", "issues": [] },
+    { "id": "checkout-port", "layer": "ports", "title": "CheckoutBrowser port", "state": "done", "issues": [{ "n": 278, "state": "merged" }] },
+    { "id": "store-port", "layer": "ports", "title": "StorePort", "state": "in_progress",
+      "issues": [{ "n": 273, "state": "merged" }, { "n": 277, "state": "open" }] },
+    { "id": "web-adapter", "layer": "adapters", "title": "web checkout adapter", "state": "done", "issues": [{ "n": 454, "state": "merged" }] },
+    { "id": "placeholder", "layer": "adapters", "title": "placeholder adapter", "detail": "stand-in, no network", "state": "in_progress", "issues": [] },
+    { "id": "expo-iap", "layer": "adapters", "title": "expo-iap adapter", "state": "blocked", "issues": [{ "n": 277, "state": "open" }] },
+    { "id": "wlc", "layer": "backend", "title": "/wlc/checkout-token", "detail": "endpoint available", "state": "done", "issues": [] },
+    { "id": "orders", "layer": "backend", "title": "/orders/*", "detail": "not on staging yet", "state": "blocked", "issues": [] }
+  ],
+  "edges": [
+    { "from": "screens", "to": "hook" },
+    { "from": "hook", "to": "checkout-port" },
+    { "from": "hook", "to": "store-port" },
+    { "from": "checkout-port", "to": "web-adapter", "label": "opens the checkout URL" },
+    { "from": "store-port", "to": "placeholder" },
+    { "from": "store-port", "to": "expo-iap" },
+    { "from": "web-adapter", "to": "wlc", "label": "POST /wlc/checkout-token" },
+    { "from": "expo-iap", "to": "orders", "style": "dashed", "label": "POST /orders/appleTransaction", "label2": "POST /orders/googlePurchase" }
+  ],
+  "notes": [
+    "Dependencies point down: screens → hook → ports → adapters → backend. The web adapter and its endpoint are done.",
+    "The placeholder keeps iOS and Android moving. ■ Blocked: the real adapter and /orders/* wait on the client (#277)."
+  ],
+  "selected": "store-port",
+  "golden": "screens/03-architecture.txt"
+}

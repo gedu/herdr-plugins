@@ -1,0 +1,51 @@
+{
+  "id": "purchase-flow",
+  "feature": "Purchases · free trial & restore",
+  "layout": "tree",
+  "updated": "2026-11-13T11:01:00+01:00",
+  "now": "iOS and Android run on a placeholder adapter · next: unblock #277",
+  "agents": [
+    { "tab": 2, "node": "android", "name": "Android" },
+    { "tab": 3, "node": "ios", "name": "iOS" }
+  ],
+  "nodes": [
+    { "id": "root", "title": "usePurchaseActions", "detail": "one flow, same screen", "state": "done", "issues": [],
+      "pos": { "col": 46, "row": 6 }, "w": 31 },
+    { "id": "web-port", "title": "CheckoutBrowser port", "detail": "opens the checkout page", "state": "done",
+      "issues": [{ "n": 278, "state": "merged" }], "pos": { "col": 9, "row": 14 }, "w": 29 },
+    { "id": "store-port", "title": "StorePort", "detail": "restore · start free trial", "state": "in_progress",
+      "issues": [{ "n": 273, "state": "merged" }, { "n": 277, "state": "open" }], "pos": { "col": 83, "row": 14 }, "w": 33 },
+    { "id": "web", "title": "web", "detail": "location.assign", "state": "done",
+      "issues": [{ "n": 454, "state": "merged" }], "pos": { "col": 2, "row": 23 }, "w": 21 },
+    { "id": "native", "title": "native", "detail": "Linking.openURL", "state": "done",
+      "issues": [{ "n": 278, "state": "merged" }], "pos": { "col": 25, "row": 23 }, "w": 21 },
+    { "id": "ios", "title": "iOS · StoreKit 2", "detail": "signedTransaction", "state": "in_progress",
+      "issues": [{ "n": 277, "state": "open" }], "pos": { "col": 48, "row": 23 }, "w": 33 },
+    { "id": "android", "title": "Android · Play Billing", "detail": "purchaseToken", "state": "in_progress",
+      "issues": [{ "n": 277, "state": "open" }], "pos": { "col": 83, "row": 23 }, "w": 33 },
+    { "id": "nostore", "title": "web · noStore", "detail": "no store on web", "state": "done", "issues": [],
+      "pos": { "col": 118, "row": 23 }, "w": 21 },
+    { "id": "adapter", "title": "expo-iap adapter", "detail": "blocked by the client", "state": "blocked",
+      "blocked_by": "the client: store products and /orders/* endpoints are not on staging",
+      "issues": [{ "n": 277, "state": "open" }], "pos": { "col": 65, "row": 31 }, "w": 33 }
+  ],
+  "edges": [
+    { "from": "root", "to": "web-port", "label": "Start on the web" },
+    { "from": "root", "to": "store-port", "label": "Start my free trial / Restore" },
+    { "from": "web-port", "to": "web", "label": "POST /wlc/checkout-token", "label_at": "trunk" },
+    { "from": "web-port", "to": "native" },
+    { "from": "store-port", "to": "ios", "label": "POST /orders/appleTransaction" },
+    { "from": "store-port", "to": "android", "label": "POST /orders/googlePurchase" },
+    { "from": "store-port", "to": "nostore" },
+    { "from": "ios", "to": "adapter", "label": "replaces the placeholder", "merge": true },
+    { "from": "android", "to": "adapter", "merge": true }
+  ],
+  "notes": [
+    "Web is built and merged: the Braintree checkout opens through the CheckoutBrowser port (#278, #454).",
+    "StorePort (#273) is merged. iOS and Android both run on a placeholder adapter because the stores differ:",
+    "signedTransaction vs purchaseToken, a different endpoint, a different storefront format.",
+    "■ Blocked: the real adapter #277 (expo-iap) waits on the client for store products and the /orders/* endpoints on staging."
+  ],
+  "selected": "android",
+  "golden": "screens/01-tree-flow.txt"
+}

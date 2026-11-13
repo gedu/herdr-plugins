@@ -1,0 +1,44 @@
+  purchase-flow  5/9   +2 flows · tab
+────────────────────────────────────────────────────────────────────────────
+ purchase-flow  Purchases · free trial & restore                        5/9
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ now     ● iOS and Android run on a placeholder
+ agents  ◂ tab 2 · Android   ◂ tab 3 · iOS
+ layout  vertical · the map needs 118 columns, this popup has 76
+
+   ✓ usePurchaseActions                               one flow, same screen
+   │
+   ├─ Start on the web
+   │  ✓ CheckoutBrowser port                                    #278 merged
+   │  │    POST /wlc/checkout-token
+   │  ├─ ✓ web · location.assign                                #454 merged
+   │  └─ ✓ native · Linking.openURL                             #278 merged
+   │
+   └─ Start my free trial / Restore
+      ● StorePort                                    #273 merged  #277 open
+      ├─ ● iOS · StoreKit 2   ◂ tab 3                             #277 open
+      │      POST /orders/appleTransaction
+ ▸    ├─ ● Android · Play Billing   ◂ tab 2                       #277 open
+      │      POST /orders/googlePurchase
+      ├─ ■ expo-iap adapter                              blocked  #277 open
+      │      replaces the placeholder (iOS + Android)
+      └─ ✓ web · noStore
+
+ ── notes ─────────────────────────────────────────────────────────────────
+ Web is built and merged (#278, #454). StorePort (#273) is merged;
+ iOS and Android run on a placeholder because the stores differ.
+ ■ Blocked: the real adapter #277 (expo-iap) waits on the client
+ for store products and the /orders/* endpoints on staging.
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────
+ ✓ done  ● in progress  ○ pending  ■ blocked  ◂ agent
+ ↑↓ move  enter detail  g GitHub  tab flow  / flows  q close

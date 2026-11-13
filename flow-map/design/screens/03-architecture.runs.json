@@ -1,0 +1,1334 @@
+{
+ "cols": 140,
+ "rows": 44,
+ "title": "C · architecture",
+ "lines": [
+  [
+   {
+    "text": "purchase-flow",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "5/9",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "checkout-ui",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "1/4",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "purchase-layers",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": "  ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "4/9",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "tab",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "next",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flow",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "·",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "all",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flows",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "purchase-layers",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "Purchases",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "·",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "layers",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "&",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "dependencies",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "4/9",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "nodes",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "done",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "now",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "screens,",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "StorePort",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "and",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "the",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "placeholder",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "adapter",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "are",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "in",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "progress",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "·",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "next:",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "unblock",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "#277",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "agents",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "5",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "placeholder",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "adapter",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "6",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "screens",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [],
+  [
+   {
+    "text": "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓",
+    "fg": "#f2f4f9"
+   }
+  ],
+  [
+   {
+    "text": "UI",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "Plan",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "&",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "checkout",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "screens",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   }
+  ],
+  [
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "#302",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   }
+  ],
+  [
+   {
+    "text": "┗━━━━━━━━━━━━━━━━━",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "6",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "━┛",
+    "fg": "#f2f4f9"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "╭───────────────────────────╮",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "domain",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "usePurchaseActions",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "one",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flow,",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "same",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "screen",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "╰───────────────────────────╯",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "╭───────────────────────────────┴───────────────────────────────╮",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "╭───────────────────────────╮",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   }
+  ],
+  [
+   {
+    "text": "ports",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "CheckoutBrowser",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "port",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "StorePort",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": "               ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "#278",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "#273",
+    "fg": "#62d394",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "·",
+    "fg": "#8a93a8",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   },
+   {
+    "text": "   ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   }
+  ],
+  [
+   {
+    "text": "╰───────────────────────────╯",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛",
+    "fg": "#f2f4f9",
+    "bg": "#18203a"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "opens",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "the",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "checkout",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "URL",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "╭────────────────┴──────────────╮",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "╭───────────────────────────╮",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┏━━━━━━━━━━━━━━━━━━━━━━━━━┓",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "╭─────────────────────────╮",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "adapters",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "web",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "checkout",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "adapter",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "placeholder",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "adapter",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e",
+    "bold": true
+   },
+   {
+    "text": "expo-iap",
+    "fg": "#f0a35e",
+    "bold": true
+   },
+   {
+    "text": "adapter",
+    "fg": "#f0a35e",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "#454",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "stand-in,",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "no",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "network",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "┃",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "╰───────────────────────────╯",
+    "fg": "#62d394"
+   },
+   {
+    "text": "┗━━━━━━━━━━━━━━━",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "5",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "━┛",
+    "fg": "#f2f4f9"
+   },
+   {
+    "text": "╰─────────────────────────╯",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/orders/appleTransaction",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "┆",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/wlc/checkout-token",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/orders/googlePurchase",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "┆",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "↓",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "↓",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "╭───────────────────────────╮",
+    "fg": "#62d394"
+   },
+   {
+    "text": "╭───────────────────────────╮",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "backend",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "/wlc/checkout-token",
+    "fg": "#62d394",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e",
+    "bold": true
+   },
+   {
+    "text": "/orders/*",
+    "fg": "#f0a35e",
+    "bold": true
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "endpoint",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "available",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "│",
+    "fg": "#62d394"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "not",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "on",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "staging",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "yet",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "│",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "╰───────────────────────────╯",
+    "fg": "#62d394"
+   },
+   {
+    "text": "╰───────────────────────────╯",
+    "fg": "#f0a35e"
+   }
+  ],
+  [
+   {
+    "text": "──",
+    "fg": "#2a3144"
+   },
+   {
+    "text": "notes",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "Dependencies",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "point",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "down:",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "screens",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "→",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "hook",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "→",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "ports",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "→",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "adapters",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "→",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "backend.",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "The",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "web",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "adapter",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "its",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "endpoint",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "are",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "done.",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "The",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "placeholder",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "keeps",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "iOS",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "Android",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "moving.",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "Blocked:",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "real",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "adapter",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "/orders/*",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "wait",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "on",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "client",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "(#277).",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "done",
+    "fg": "#62d394"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "in",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "progress",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "○",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "pending",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "blocked",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "┆",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "not",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "wired",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "yet",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "agent",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "here",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "#123",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   },
+   {
+    "text": "#123",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   }
+  ],
+  [
+   {
+    "text": "↑↓←→",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "move",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "along",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "dependencies",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "enter",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "node",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "detail",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "g",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "open",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "on",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "GitHub",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "tab",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "next",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flow",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "flows",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "q",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "close",
+    "fg": "#8a93a8"
+   }
+  ]
+ ]
+}

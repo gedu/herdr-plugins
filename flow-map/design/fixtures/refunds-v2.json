@@ -1,0 +1,12 @@
+{
+  "id": "refunds-v2",
+  "feature": "Refunds",
+  "layout": "tree",
+  "updated": null,
+  "now": null,
+  "agents": [],
+  "nodes": [],
+  "edges": [],
+  "notes": [],
+  "golden": "screens/06-empty-state.txt"
+}

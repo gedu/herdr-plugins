@@ -1,0 +1,1060 @@
+{
+ "cols": 76,
+ "rows": 44,
+ "title": "E · narrow popup, vertical layout",
+ "lines": [
+  [
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "purchase-flow",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": "  ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "5/9",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "+2",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flows",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "·",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "tab",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "────────────────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "purchase-flow",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "Purchases",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "·",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "free",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "trial",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "&",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "restore",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "5/9",
+    "fg": "#f2f4f9",
+    "bold": true
+   }
+  ],
+  [
+   {
+    "text": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "now",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "iOS",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "and",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "Android",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "run",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "on",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "a",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "placeholder",
+    "fg": "#f2f4f9",
+    "bold": true
+   }
+  ],
+  [
+   {
+    "text": "agents",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "2",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "Android",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "3",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "iOS",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "layout",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "vertical",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "·",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "the",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "map",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "needs",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "118",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "columns,",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "this",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "popup",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "has",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "76",
+    "fg": "#8a93a8"
+   }
+  ],
+  [],
+  [
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "usePurchaseActions",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "one",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "flow,",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "same",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "screen",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "├─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "Start",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "on",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "the",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "web",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "CheckoutBrowser",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "port",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#278",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/wlc/checkout-token",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "├─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "web",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "location.assign",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#454",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "└─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "native",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "Linking.openURL",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#278",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   }
+  ],
+  [
+   {
+    "text": "└─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "Start",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "my",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "free",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "trial",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "Restore",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "StorePort",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "#273",
+    "fg": "#62d394"
+   },
+   {
+    "text": "merged",
+    "fg": "#62d394"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   }
+  ],
+  [
+   {
+    "text": "├─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "iOS",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "StoreKit",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "2",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "3",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/orders/appleTransaction",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "▸",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   },
+   {
+    "text": "    ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "├─",
+    "fg": "#5d6987",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "Android",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "·",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "Play",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "Billing",
+    "fg": "#f2f4f9",
+    "bg": "#18203a",
+    "bold": true
+   },
+   {
+    "text": "   ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "tab",
+    "fg": "#d5d9e4",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "2",
+    "fg": "#d5d9e4",
+    "bg": "#18203a"
+   },
+   {
+    "text": "                       ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   },
+   {
+    "text": " ",
+    "bg": "#18203a"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff",
+    "bg": "#18203a"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "POST",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/orders/googlePurchase",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "├─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "expo-iap",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "adapter",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "blocked",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "#277",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "open",
+    "fg": "#7aa7ff"
+   }
+  ],
+  [
+   {
+    "text": "│",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "replaces",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "the",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "placeholder",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "(iOS",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "+",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "Android)",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "└─",
+    "fg": "#5d6987"
+   },
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "web",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "·",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "noStore",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [],
+  [
+   {
+    "text": "──",
+    "fg": "#2a3144"
+   },
+   {
+    "text": "notes",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "─────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "Web",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "is",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "built",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "merged",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "(#278,",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#454).",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "StorePort",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "(#273)",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "is",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "merged;",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "iOS",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "Android",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "run",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "on",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "a",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "placeholder",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "because",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "stores",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "differ.",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "■",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "Blocked:",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "real",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "adapter",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "#277",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "(expo-iap)",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "waits",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "on",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "client",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [
+   {
+    "text": "for",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "store",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "products",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "and",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "the",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "/orders/*",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "endpoints",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "on",
+    "fg": "#d5d9e4"
+   },
+   {
+    "text": "staging.",
+    "fg": "#d5d9e4"
+   }
+  ],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [
+   {
+    "text": "────────────────────────────────────────────────────────────────────────────",
+    "fg": "#2a3144"
+   }
+  ],
+  [
+   {
+    "text": "✓",
+    "fg": "#62d394"
+   },
+   {
+    "text": "done",
+    "fg": "#62d394"
+   },
+   {
+    "text": "●",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "in",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "progress",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "○",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "pending",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "■",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "blocked",
+    "fg": "#f0a35e"
+   },
+   {
+    "text": "◂",
+    "fg": "#7aa7ff"
+   },
+   {
+    "text": "agent",
+    "fg": "#8a93a8"
+   }
+  ],
+  [
+   {
+    "text": "↑↓",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "move",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "enter",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "detail",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "g",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "GitHub",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "tab",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "flow",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "/",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "flows",
+    "fg": "#8a93a8"
+   },
+   {
+    "text": "q",
+    "fg": "#f2f4f9",
+    "bold": true
+   },
+   {
+    "text": "close",
+    "fg": "#8a93a8"
+   }
+  ]
+ ]
+}
