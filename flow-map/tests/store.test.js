@@ -92,3 +92,22 @@ test('list summarizes every flow', async () => {
 test('load of a missing flow says so', async () => {
   await assert.rejects(load('ghost'), /no flow "ghost"/);
 });
+
+test('a stale lock is taken over once and every waiter still gets its turn', async () => {
+  const { withLock } = await import('../src/lock.js');
+  const { mkdir, utimes, readdir } = await import('node:fs/promises');
+  const lockDir = join(dir, 'x.lock');
+  await mkdir(lockDir);
+  const old = new Date(Date.now() - 60_000);
+  await utimes(lockDir, old, old);
+  let inside = 0;
+  let maxInside = 0;
+  const runs = await Promise.all([1, 2, 3, 4].map(() => withLock(lockDir, async () => {
+    inside += 1; maxInside = Math.max(maxInside, inside);
+    await new Promise((r) => setTimeout(r, 20));
+    inside -= 1;
+  }, { staleMs: 1_000 })));
+  assert.deepEqual(runs.map((r) => r.ran), [true, true, true, true]);
+  assert.equal(maxInside, 1);
+  assert.deepEqual((await readdir(dir)).filter((f) => f.startsWith('x.lock')), []);
+});
