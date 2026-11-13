@@ -19,11 +19,11 @@ Design package (source of truth for visuals): `~/Downloads/herdr-flow-map` (PROM
 
 | ID | Specs | Route | Status | Commit |
 | --- | --- | --- | --- | --- |
-| T1 | S1 S2 | renderer core: tokens, width, grid, ANSI (truecolor/256), frame diff | pending | |
-| T2 | S1 S2 | tree layout + header/footer: golden 01 (fixed pos, then automatic) | pending | |
+| T1 | S1 S2 | renderer core: tokens, width, grid, ANSI (truecolor/256), frame diff · delegated (parallel writer) | done | 05f4a44 |
+| T2 | S1 S2 | tree layout + header/footer: golden 01 (fixed pos, then automatic) · delegated | done | 05f4a44 |
 | T3 | S1 | screen-flow (02) and architecture (03) layouts | pending | |
 | T4 | S1 | detail (04), narrow vertical (05), empty (06), switcher (07) | pending | |
-| T5 | S3 S4 S5 S8 | store + `flow` CLI, lock, ids · delegated (parallel writer, disjoint surface) | done (20 tests) | pending-commit |
+| T5 | S3 S4 S5 S8 | store + `flow` CLI, lock, ids · delegated (parallel writer, disjoint surface) | done | a6d3277, stale-lock fix |
 | T6 | S6 S9 | Herdr popup: keys, mouse probe, click/keys to set state, note, watch + redraw | pending | |
 | T7 | S7 | agent skill + setup install, README, config/keys.toml | pending | |
 
@@ -34,3 +34,5 @@ Design package (source of truth for visuals): `~/Downloads/herdr-flow-map` (PROM
 - L3 Herdr docs (plugins.mdx v0.9.5): popup takes `width`/`height` (percent or cells); nothing documents mouse forwarding into a popup → T6 starts with a probe; keyboard path is the fallback.
 - L4 Mouse probe (popup 90%×90% → 195×50, COLORTERM=truecolor): SGR 1006 reports reach the popup: clicks (0 press/release), right click (2), drag (32+, 339 events), wheel up/down (64/65) and sideways (66/67). Click-to-mark (S6) and wheel scroll are possible.
 - L5 T5 done (delegated): store.js/ids.js/lock.js/cli.js, 20 tests pass; spot check: `flow new` → `purchases`, bad state exit 1. Note: Herdr tab numbers repeat across workspaces (tab_id like w1T:t3); store keeps number only for now.
+- L6 T1/T2 done (37 tests). Golden 01 vs SPEC differences kept per SPEC: googlePurchase label gap (§5), `web · noStore` 4 rows (no issues), notes word coloring not in SPEC, golden node widths come from fixture `w` (SPEC §3 rule gives narrower boxes; `w` stays an optional override). With §3 widths, edge labels get cut (`POST /orders/appleTrans…`): layout should widen sibling spacing so labels fit when the popup has room.
+- L7 Review (RDD, lenses resilience+reliability) of a6d3277 alone (whole range exceeded the lens budget): approved, acknowledged. Advisories: stale-lock steal race (fixed by rename-claim + test, RED observed on old code), cli.js:123-129 and lock.js:12-19 warnings (informational).
