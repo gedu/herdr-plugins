@@ -17,7 +17,9 @@ const flows = [flow, load('fixtures/checkout-ui.json'), load('fixtures/purchase-
 //    the renderer keeps a 1-cell gap, so the label is cut with `…`.
 // 2. SPEC §3 "rows 2 and 3 disappear when empty": `web · noStore` has no issues, so it is 4 rows
 //    tall (bottom border on row 26), while the golden draws an empty issue row.
+// 3. SPEC §9: a flow with a blocked node shows `■` before its id on its tab (not on the active one).
 const patches = [
+  ...[...'■ purchase-layers  4/9'].map((ch, i) => [0, 44 + i, ch]),
   [21, 126, '…'], [21, 127, ' '],
   ...'╰───────────────────╯'.split('').map((ch, i) => [26, 118 + i, ch]),
   ...Array.from({ length: 21 }, (_, i) => [27, 118 + i, ' ']),
@@ -80,7 +82,9 @@ test('01 tree flow from fixture pos/w matches the golden grid', () => {
 });
 
 test('01 tree flow colors match the golden runs', () => {
-  assertColors(render(flow, opts));
+  const g = render(flow, opts);
+  assertColors(g);
+  assert.equal(g.cells[44].fg, 'blocked', '■ tab marker');
 });
 
 test('01 tree flow with automatic layout (no pos) matches the golden grid and colors', () => {

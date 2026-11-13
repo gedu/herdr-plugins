@@ -34,11 +34,18 @@ export function drawNode(g, node, rect, { selected = false, agents = [] } = {}) 
   const detail = detailOf(node);
   if (detail) text(g, col + 2, r++, detail, { fg: state === 'blocked' ? 'blocked' : 'muted' }, inner);
   if (node.issues?.length) drawChips(g, col + 2, r, chips(node.issues), inner);
+  drawAgentTag(g, rect, agents);
+  if (selected) put(g, col - 2, row + 1, glyphs.selected_marker, { fg: 'accent' });
+}
+
+// `◂ tab N` on the bottom border, right-aligned; dropped when the box is too narrow (SPEC §2).
+export function drawAgentTag(g, { col, row, w, h }, agents) {
   const tag = agentTag(agents);
   const tagW = strWidth(tag);
   if (tag && w >= tagW + 6) text(g, col + w - 4 - tagW, row + h - 1, ` ${tag} `, { fg: 'accent' });
-  if (selected) put(g, col - 2, row + 1, glyphs.selected_marker, { fg: 'accent' });
 }
+
+export { TITLE_FG };
 
 export function drawChips(g, col, row, list, maxW) {
   let c = col;

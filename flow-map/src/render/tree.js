@@ -7,7 +7,7 @@ import { nodeWidth, nodeHeight, drawNode } from './node.js';
 const E = glyphs.edge;
 const EDGE = { fg: 'edge' };
 const DASHED = { fg: 'blocked' };
-const center = (r) => r.col + Math.floor(r.w / 2);
+export const center = (r) => r.col + Math.floor(r.w / 2);
 const bottom = (r) => r.row + r.h - 1;
 
 // True when `a` is `b` or one of its tree ancestors (an edge b → a would close a cycle).
@@ -16,7 +16,7 @@ function isAncestor(parent, a, b) {
   return false;
 }
 
-function graph(flow) {
+export function graph(flow) {
   const ids = flow.nodes.map((n) => n.id);
   const known = new Set(ids);
   const kids = new Map(ids.map((id) => [id, []]));
@@ -51,8 +51,53 @@ function depths(flow, g) {
   return depth;
 }
 
+// Places subtrees left to right: leaves packed `gap` cols apart from `start`, a parent centered over
+// its children (SPEC §5). With `labelNeeds`, a node is pushed right until the labels to its left fit.
+export function columnPacker({ kids, depth, rects, start, gap = L.sibling_gap_cols, labelNeeds }) {
+  const free = new Map();
+  const labelFree = new Map();
+  const placed = new Set();
+  const nextFree = (d) => free.get(d) ?? start;
+  const subtree = (id) => [id, ...(kids.get(id) ?? []).flatMap((e) => subtree(e.to))];
+  const shift = (id, by) => { for (const n of subtree(id)) rects.get(n).col += by; };
+  const claim = (id) => {
+    for (const n of subtree(id)) {
+      const r = rects.get(n);
+      const d = depth.get(n);
+      free.set(d, Math.max(nextFree(d), r.col + r.w + gap));
+      if (labelNeeds) for (const [ld, min] of labelNeeds(n, center(r))) labelFree.set(ld, Math.max(labelFree.get(ld) ?? -Infinity, min));
+    }
+  };
+  const place = (id, target) => {
+    const r = rects.get(id);
+    const ks = (kids.get(id) ?? []).map((e) => e.to);
+    for (const k of ks) place(k);
+    if (!ks.length) r.col = nextFree(depth.get(id));
+    else {
+      const cs = ks.map((k) => center(rects.get(k))).sort((a, b) => a - b);
+      const mid = cs.length >> 1;
+      const c = cs.length % 2 ? cs[mid] : Math.floor((cs[mid - 1] + cs[mid]) / 2);
+      r.col = c - Math.floor(r.w / 2);
+    }
+    if (target !== undefined && target > r.col) shift(id, target - r.col);
+    const over = nextFree(depth.get(id)) - r.col;
+    if (over > 0) shift(id, over);
+    const need = (labelFree.get(depth.get(id)) ?? -Infinity) - center(r);
+    if (need > 0) shift(id, need);
+    for (const n of subtree(id)) placed.add(n);
+    claim(id);
+  };
+  return { place, placed };
+}
+
+export const labelW = (e) => Math.max(strWidth(e.label ?? ''), strWidth(e.label2 ?? ''));
+
+// Rightmost cell a label drawn right of its stub would use (for the width a layout needs).
+export const labelEnd = (stub, e) => stub + 1 + labelW(e);
+
 // Positions for every node: rows by depth, columns by packing leaves and centering parents.
-export function layoutTree(flow, top = L.header_rows) {
+// `fitLabels` widens sibling gaps so each edge label and its 1-cell gap fit before the next stub.
+export function layoutTree(flow, top = L.header_rows, { fitLabels = false } = {}) {
   const g = graph(flow);
   const byId = new Map(flow.nodes.map((n) => [n.id, n]));
   const depth = depths(flow, g);
@@ -70,35 +115,17 @@ export function layoutTree(flow, top = L.header_rows) {
   }
   for (const id of g.ids) rects.get(id).row = rowOf[depth.get(id)];
 
-  const free = new Map();
-  const gap = L.sibling_gap_cols;
-  const nextFree = (d) => free.get(d) ?? L.margin_cols + 1;
-  const subtree = (id) => [id, ...g.kids.get(id).flatMap((e) => subtree(e.to))];
-  const shift = (id, by) => { for (const n of subtree(id)) rects.get(n).col += by; };
-  const claim = (id) => {
-    for (const n of subtree(id)) {
-      const r = rects.get(n);
-      free.set(depth.get(n), Math.max(nextFree(depth.get(n)), r.col + r.w + gap));
-    }
-  };
-  const placed = new Set();
-  const place = (id, target) => {
-    const r = rects.get(id);
-    const kids = g.kids.get(id).map((e) => e.to);
-    for (const k of kids) place(k);
-    if (!kids.length) r.col = nextFree(depth.get(id));
-    else {
-      const cs = kids.map((k) => center(rects.get(k))).sort((a, b) => a - b);
-      const mid = cs.length >> 1;
-      const c = cs.length % 2 ? cs[mid] : Math.floor((cs[mid - 1] + cs[mid]) / 2);
-      r.col = c - Math.floor(r.w / 2);
-    }
-    if (target !== undefined && target > r.col) shift(id, target - r.col);
-    const over = nextFree(depth.get(id)) - r.col;
-    if (over > 0) shift(id, over);
-    for (const n of subtree(id)) placed.add(n);
-    claim(id);
-  };
+  // Labels: a child's label sits on its stub row, a trunk label on the parent's, a merge label on the arrow row.
+  const labelNeeds = fitLabels ? (id, c) => {
+    const out = [];
+    const p = g.parent.get(id);
+    if (p?.label && p.label_at !== 'trunk') out.push([depth.get(id), c + labelW(p) + 3]);
+    for (const e of g.kids.get(id)) if (e.label && e.label_at === 'trunk') out.push([depth.get(id), c + labelW(e) + 3]);
+    const m = g.mergeParents.get(id)?.find((e) => e.label);
+    if (m) out.push([depth.get(id), c + labelW(m) + 3]);
+    return out;
+  } : null;
+  const { place, placed } = columnPacker({ kids: g.kids, depth, rects, start: L.margin_cols + 1, labelNeeds });
 
   for (const id of g.ids) if (!g.parent.has(id) && !g.mergeParents.has(id)) place(id);
   // Merge nodes: centered on the floor of the midpoint between their parents' centers.
@@ -119,19 +146,24 @@ export function layoutTree(flow, top = L.header_rows) {
   // A fixed `pos` on a node wins over the automatic position.
   for (const n of flow.nodes) if (n.pos) Object.assign(rects.get(n.id), { col: n.pos.col, row: n.pos.row });
 
-  const width = Math.max(0, ...[...rects.values()].map((r) => r.col + r.w)) + L.margin_cols;
-  return { g, byId, rects, width };
+  let width = Math.max(0, ...[...rects.values()].map((r) => r.col + r.w)) + L.margin_cols;
+  if (fitLabels) {
+    for (const [id, es] of g.kids) for (const e of es) if (e.label) width = Math.max(width, labelEnd(center(rects.get(e.label_at === 'trunk' ? id : e.to)), e) + 2);
+    for (const [id, es] of g.mergeParents) { const e = es.find((x) => x.label); if (e) width = Math.max(width, labelEnd(center(rects.get(id)), e) + 2); }
+  }
+  const end = Math.max(top, ...[...rects.values()].map((r) => r.row + r.h));
+  return { g, byId, rects, width, end };
 }
 
 // Junction glyph for a bar cell from which lines go up, down, left and right.
-function junction(up, down, left, right) {
+export function junction(up, down, left, right) {
   if (up && down) return left && right ? E.cross : right ? '├' : left ? '┤' : E.v;
   if (down) return left && right ? E.t_down : right ? E.tl : left ? E.tr : E.v;
   if (up) return left && right ? E.t_up : right ? E.bl : left ? E.br : E.v;
   return E.h;
 }
 
-function bar(g, row, ups, downs) {
+export function bar(g, row, ups, downs) {
   const lo = Math.min(...ups, ...downs);
   const hi = Math.max(...ups, ...downs);
   const up = new Set(ups);
@@ -192,7 +224,7 @@ function roomLeft(g, row, end) {
 }
 
 // Labels sit 2 cols right of their stub; if they do not fit, left of it, else cut with `…`.
-function drawLabel(g, { row, stub, text: label }) {
+export function drawLabel(g, { row, stub, text: label }) {
   const w = strWidth(label);
   const right = roomRight(g, row, stub + 2);
   const left = roomLeft(g, row, stub - 2);
