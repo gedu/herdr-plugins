@@ -249,3 +249,20 @@ test('clicking ✎ N opens that box’s detail with its notes', async () => {
   const text = Array.from({ length: ROWS }, (_, i) => rowText(app.frame(), i)).join('\n');
   assert.match(text, /check the sandbox/);
 });
+
+test('the wheel scrolls away from the selection; moving with the keys brings it back into view', async () => {
+  const app = await open({ rows: 22 });
+  const wheel = (dir) => app.handle({ type: 'mouse', kind: 'wheel', wheel: dir, button: 64, col: 10, row: 10 });
+  const before = app.state.selected;
+  for (let i = 0; i < 10; i++) await wheel('down');
+  assert.ok(app.state.scroll >= 15, `scrolled to ${app.state.scroll}`);
+  const f = app.frame();
+  assert.equal(f.scroll, app.state.scroll);
+  const MAP_TOP = 6;
+  const old = nodeRect(app.state, app.ctx(), before);
+  assert.ok(old.row + old.h <= MAP_TOP, 'the selected box scrolled out of view');
+  await app.handle(key('down'));
+  const r = nodeRect(app.state, app.ctx(), app.state.selected);
+  assert.ok(r.row >= MAP_TOP && r.row + r.h <= 22 - 3, `the newly selected box is on screen (row ${r.row})`);
+  assert.equal(app.state.follow, true);
+});

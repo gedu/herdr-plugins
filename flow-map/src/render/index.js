@@ -74,8 +74,10 @@ function fitScroll(scroll, total, V, r0, r1) {
   return s;
 }
 
-// Map region, notes rule and effective scroll for one frame.
-function frameOf(flow, b, { rows, selected, scroll = 0 }) {
+// Map region, notes rule and effective scroll for one frame. The scroll keeps the selection in
+// view unless `follow` is false (the person scrolled with the wheel).
+function frameOf(flow, b, { rows, selected: sel, scroll = 0, follow = true }) {
+  const selected = follow ? sel : undefined;
   const { n, latest, preferred } = notesRows(rows, flow.notes ?? []);
   if (b.kind === 'vertical') {
     const top = VERTICAL_TOP;
@@ -113,10 +115,10 @@ function rectsOf(b, f, cols) {
   return rects;
 }
 
-export function layout(flow, { cols, rows, scroll = 0, selected } = {}) {
+export function layout(flow, { cols, rows, scroll = 0, selected, follow } = {}) {
   const b = base(flow, cols, rows);
   if (b.kind === 'empty') return { kind: 'empty', rects: b.rects, scroll: 0, region: { top: MAP_TOP, end: MAP_TOP } };
-  const f = frameOf(flow, b, { rows, selected, scroll });
+  const f = frameOf(flow, b, { rows, selected, scroll, follow });
   const [lo, hi] = visibleRows(f);
   return { kind: b.kind, rects: rectsOf(b, f, cols), scroll: f.scroll, region: { top: f.top + lo - f.scroll, end: f.top + hi - f.scroll + 1 } };
 }

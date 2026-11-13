@@ -26,7 +26,7 @@ export function defaultSelected(flow) {
   return (nodes.find((n) => n.state === 'in_progress') ?? nodes[0])?.id ?? null;
 }
 
-const viewOpts = (state, ctx) => ({ cols: ctx.cols, rows: ctx.rows, scroll: state.scroll, selected: state.selected, view: state.view });
+const viewOpts = (state, ctx) => ({ cols: ctx.cols, rows: ctx.rows, scroll: state.scroll, selected: state.selected, view: state.view, follow: state.follow !== false });
 
 // --- geometry: the renderer's layout/hitTest/navigate when present, else the tree layout ---
 
@@ -76,6 +76,12 @@ function navigateFrom(state, ctx, dir) {
     if (score < bestScore) { bestScore = score; best = id; }
   }
   return best ?? state.selected;
+}
+
+// Select `id` and scroll so it is in view again (after the wheel moved the map away).
+function follow(state, ctx, id) {
+  const next = { ...state, selected: id, follow: true };
+  return { ...next, scroll: clampScroll(next, ctx, state.scroll) };
 }
 
 function clampScroll(state, ctx, scroll) {
@@ -201,7 +207,9 @@ const none = (state) => ({ state, effects: [] });
 function onMouse(state, ev, ctx) {
   if (ev.kind === 'wheel') {
     if (state.menu || state.view !== 'map' || (ev.wheel !== 'up' && ev.wheel !== 'down')) return none(state);
-    return none({ ...state, scroll: clampScroll(state, ctx, state.scroll + (ev.wheel === 'up' ? -WHEEL_STEP : WHEEL_STEP)) });
+    // The wheel scrolls freely; the next move with the keys scrolls back to the selection.
+    const free = { ...state, follow: false };
+    return none({ ...free, scroll: clampScroll(free, ctx, state.scroll + (ev.wheel === 'up' ? -WHEEL_STEP : WHEEL_STEP)) });
   }
   if (ev.kind !== 'press' || ev.button !== 0) return none(state);
   if (state.menu) {
@@ -219,7 +227,7 @@ function onMouse(state, ev, ctx) {
   const id = hitNode(state, ctx, ev.col, ev.row);
   if (!id) return none(state);
   if (id === state.selected) return none(openMenuOn(state, ctx));
-  return none({ ...state, selected: id });
+  return none({ ...state, selected: id, follow: true });
 }
 
 function onKey(state, ev, ctx) {
@@ -250,7 +258,7 @@ function onKey(state, ev, ctx) {
     return link.url ? { state, effects: [{ type: 'open', url: link.url }] } : none({ ...state, message: link.message });
   }
   if (state.view === 'detail') return none(ev.name === 'escape' ? { ...state, view: 'map' } : state);
-  if (DIRS[ev.name]) return none({ ...state, selected: navigateFrom(state, ctx, ev.name) });
+  if (DIRS[ev.name]) return none(follow(state, ctx, navigateFrom(state, ctx, ev.name)));
   if (ev.name === 'enter' && state.selected) return none({ ...state, view: 'detail' });
   return none(state);
 }
