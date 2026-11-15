@@ -1,0 +1,8 @@
+# Agents sidebar: the tab name first (white), the agent's folder under it (gray).
+# $path is reported by the tab-names plugin on every agent event, so it needs that plugin linked.
+# Append this block to ~/.config/herdr/config.toml, then run `herdr server reload-config`.
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", { token = "tab", fg = "#ffffff", bold = true }],
+  [{ token = "$path", fg = "#7f848e", bold = false }],
+]

@@ -5,7 +5,9 @@
 import { execFile } from 'node:child_process';
 import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { dirname, basename, join } from 'node:path';
+import { homedir } from 'node:os';
 import { labelFor, plan } from './name.js';
+import { shortPath } from './path.js';
 import { withLock } from './lock.js';
 
 const bin = process.env.HERDR_BIN_PATH || 'herdr';
@@ -44,6 +46,13 @@ const { ran } = await withLock(lockDir, async () => {
     if ((await run(bin, ['tab', 'rename', tab_id, label])) === null) { failed.add(tab_id); console.error(`rename ${tab_id} -> ${label} failed`); }
   }
   for (const id of failed) { if (owned[id]) result.owned[id] = owned[id]; else delete result.owned[id]; }
+  // The sidebar's $path row: each agent's folder, short enough to read in a narrow column.
+  for (const p of panes.filter((x) => x.agent)) {
+    const value = shortPath(p.foreground_cwd || p.cwd, homedir());
+    if (!value) continue;
+    const args = ['pane', 'report-metadata', p.pane_id, '--source', 'tab-names', '--token', `path=${value}`, '--seq', String(Date.now())];
+    if ((await run(bin, args)) === null) console.error(`report path for ${p.pane_id} failed`);
+  }
   await writeFile(`${ownedFile}.tmp`, JSON.stringify(result.owned, null, 2));
   await rename(`${ownedFile}.tmp`, ownedFile);
 });
