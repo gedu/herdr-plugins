@@ -9,6 +9,8 @@ Press the action's key (`prefix+i` below) in the pane where an agent mentioned a
 - It finds every issue reference on that pane's screen (`#1232`, `owner/repo#1232`, or a GitHub URL), most recent first, and lists them with their titles. `j`/`k` move, `enter` shows the card, `esc` goes back.
 - With a single reference, the card opens straight away.
 - With none on screen, it reads the clipboard, so copying `#1232` and pressing the key works too.
+- Before listing anything it asks GitHub whether each reference exists and drops the ones that answer 404 (an issue number an agent made up). Other failures, such as being offline, keep the reference so the card shows the real error.
+- With nothing left, a "No issues found" notification shows in the bottom-right corner.
 
 A bare `#1232` is looked up in the `origin` repo of the focused pane's folder.
 
@@ -24,6 +26,16 @@ key = "prefix+i"
 type = "plugin_action"
 command = "gedu.issue-card.show"
 description = "show the GitHub issue card"
+```
+
+The "No issues found" notification only shows when Herdr's toasts are on. They are off by default, so add this too (it also enables Herdr's agent finished / needs-input toasts):
+
+```toml
+[ui.toast]
+delivery = "herdr"
+
+[ui.toast.herdr]
+position = "bottom-right"
 ```
 
 ## What it runs

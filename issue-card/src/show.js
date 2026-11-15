@@ -3,6 +3,7 @@
 // the clipboard. Runs with no terminal, so errors go to the plugin log.
 import { execFile } from 'node:child_process';
 import { targetOf, parseRemote, refsIn } from './target.js';
+import { keepExisting } from './exists.js';
 
 const SCREEN_LINES = '300';
 
@@ -36,9 +37,12 @@ async function clipboardRef() {
 const clicked = targetOf({ url });
 let refs = clicked ? [clicked] : await screenRefs();
 if (!refs.length) refs = await clipboardRef();
+refs = await keepExisting(refs, run);
 if (!refs.length) {
-  console.error(`No issue to show. clicked=${JSON.stringify(url)} pane=${pane} repo=${repo} source=${context.invocation_source}`);
-  process.exit(1);
+  // Nothing to show is not a failure: say so in a corner toast instead of exiting with an error.
+  const n = await run(bin, ['notification', 'show', 'No issues found', '--body', 'No existing issue or PR on this screen or in the clipboard.', '--position', 'bottom-right', '--sound', 'none']);
+  console.error(`No issue to show. notification: ${n.stderr.trim() || n.stdout.trim()}`);
+  process.exit(0);
 }
 
 const list = refs.map((r) => `${r.repo}#${r.number}`).join(',');
