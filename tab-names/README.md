@@ -18,6 +18,14 @@ herdr-plugins · main agent in the main checkout, on branch main
 - Capped at 32 characters.
 - Tabs without an agent, and agents outside a git repo, are left alone.
 
+## The folder under the name
+
+On the same runs it reports each agent's folder as the pane metadata token `$path`, shortened
+to fit a narrow sidebar: `~` for home, and the tail behind an ellipsis when it is long
+(`…/herdr-plugins`). Herdr has no folder token for Agent rows, so the sidebar shows it through
+`$path`. Add [`config/sidebar.toml`](../config/sidebar.toml) to `config.toml` to get the tab name
+in white with the folder in gray under it.
+
 ## Names you set by hand
 
 The plugin only renames a tab whose label is still Herdr's default (digits, like `3`) or

@@ -49,7 +49,10 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
 3. **Keys.** Append each block of [`config/keys.toml`](config/keys.toml) to
    `~/.config/herdr/config.toml` (or the file `$HERDR_CONFIG_PATH` points to), skipping any
    block whose `key` that file already binds. Never replace the file: it holds the person's
-   theme, prefix and other keys.
+   theme, prefix and other keys. Also append [`config/sidebar.toml`](config/sidebar.toml)
+   (tab name in white, folder in gray in the agents sidebar) unless the file already has
+   `[ui.sidebar.agents]`, and the `[ui.toast]` block from the
+   [issue-card README](issue-card/README.md) so its "No issues found" toast shows.
 
    ```sh
    herdr server reload-config   # expect "status":"applied" and "diagnostics":[]
