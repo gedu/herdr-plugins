@@ -1,0 +1,10 @@
+{
+  "name": "agent-todos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node setup/setup.js",
+    "test": "node --test setup/*.test.js && claude plugin test ."
+  },
+  "engines": { "node": ">=20" }
+}
