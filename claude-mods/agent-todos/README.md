@@ -51,7 +51,20 @@ and add the `env` line above to `~/.claude/settings.json` yourself.
 | `TODOs` button above the prompt | Open or close the pane |
 | `/agent-todos` | Open the pane |
 | `/agent-todos demo` | Fill it with a sample list (one of each state) |
-| `/agent-todos clear` | Empty it |
+| `/agent-todos clear` | Empty it, and forget the list saved for the next session |
+
+## Handing the list to the next session
+
+Every change to the list is also saved for the folder the session runs in (in the mod's own
+store, per folder). When a new conversation starts there, after `/clear` or an exit, Claude is
+told about the unfinished list and, if you ask to continue that work, recreates the open items
+with its task tools and carries on. If your request is unrelated it ignores the list.
+
+- The list is removed when every task is done, or with `/agent-todos clear`.
+- A list older than 14 days is not offered.
+- A session is never handed its own list.
+- One list per folder: two sessions working in the same folder at once share it, and the last
+  writer wins.
 
 ## If the pane is empty
 
