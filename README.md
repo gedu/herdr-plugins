@@ -10,6 +10,12 @@ Herdr plugins, one per folder. Each folder has its own `herdr-plugin.toml` and i
 | [`timesheet`](timesheet/) | Drafts the day's Productive time entry from your commits and PRs; publishes on confirm. |
 | [`flow-map`](flow-map/) | A live map of a long feature (tree, screens, layers) that every agent on it updates with `flow`. |
 
+Claude Code mods live in [`claude-mods/`](claude-mods/); this repo is also their marketplace:
+
+| Mod | What it does |
+| --- | --- |
+| [`agent-todos`](claude-mods/agent-todos/) | Shows the session's own todos (now, pending, done) in a pane beside the chat. |
+
 ## Install
 
 ```sh
@@ -80,6 +86,13 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
 
    ```sh
    cd ~/Documents/mine/herdr-plugins/flow-map && npm run setup
+   ```
+
+6. **Claude Code todos pane.** Install the `agent-todos` mod and turn on Claude Code's task
+   tools (it backs up `~/.claude/settings.json` first), then restart Claude Code:
+
+   ```sh
+   cd ~/Documents/mine/herdr-plugins/claude-mods/agent-todos && npm run setup
    ```
 
 ### Where the config lives

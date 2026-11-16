@@ -1,2 +1,3 @@
 node_modules/
 .atl/
+claude-mods/*/.claude-plugin/types/

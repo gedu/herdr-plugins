@@ -1,0 +1,13 @@
+{
+  "name": "herdr-plugins",
+  "owner": {
+    "name": "gedu"
+  },
+  "description": "Claude Code mods that go with these Herdr plugins",
+  "plugins": [
+    {
+      "name": "agent-todos",
+      "source": "./claude-mods/agent-todos"
+    }
+  ]
+}
