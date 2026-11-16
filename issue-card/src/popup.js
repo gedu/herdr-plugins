@@ -3,11 +3,20 @@
 // esc goes back to the list (or closes), o opens on GitHub, q closes.
 import { execFile, spawn } from 'node:child_process';
 import { cardOf, listOf } from './card.js';
+import { freshness, keyOf, loadCache, REVALIDATE_MS, saveCache } from './cache.js';
 
 const GITHUB_LINK = /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/(issues|pull)\/\d+$/;
 const repo = process.env.ISSUE_CARD_REPO || '';
+const cacheDir = process.env.ISSUE_CARD_CACHE || '';
 const items = String(process.env.ISSUE_CARD_REFS || '').split(',').map((s) => /^([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(\d+)$/.exec(s))
   .filter(Boolean).map((m) => ({ repo: m[1], number: Number(m[2]) }));
+// Saved copies are loaded before the first draw, so a card the cache knows never shows "Loading…".
+const cache = await loadCache(cacheDir);
+const startedAt = Date.now();
+for (const item of items) {
+  const entry = cache[keyOf(item)];
+  if (entry?.issue) item.issue = entry.issue;
+}
 const out = process.stdout;
 let selected = 0;
 let mode = items.length === 1 ? 'card' : 'list';
@@ -75,13 +84,19 @@ function openLink(link) {
 }
 out.on('resize', draw);
 
+// A saved copy shows at once; GitHub is asked again only when that copy is older than
+// REVALIDATE_MS, and the answer replaces it on screen. A failed refresh keeps the saved copy.
 for (const item of items) {
+  const entry = cache[keyOf(item)];
+  if (entry?.issue && freshness(entry, startedAt, REVALIDATE_MS) === 'fresh') continue;
   execFile('gh', ['api', `repos/${item.repo}/issues/${item.number}`], { timeout: 15_000, maxBuffer: 4 * 1024 * 1024, encoding: 'utf8' }, (error, stdout, stderr) => {
     try {
       if (error) throw new Error(String(stderr).trim().split('\n')[0] || error.message);
       item.issue = JSON.parse(stdout);
+      item.error = undefined;
+      saveCache(cacheDir, { [keyOf(item)]: { at: Date.now(), issue: item.issue } }, Date.now());
     } catch (e) {
-      item.error = String(e.message).replace(/^gh: /, '').slice(0, 200);
+      if (!item.issue) item.error = String(e.message).replace(/^gh: /, '').slice(0, 200);
     }
     draw();
   });

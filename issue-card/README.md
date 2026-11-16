@@ -11,6 +11,7 @@ Press the action's key (`prefix+i` below) in the pane where an agent mentioned a
 - With none on screen, it reads the clipboard, so copying `#1232` and pressing the key works too.
 - Before listing anything it asks GitHub whether each reference exists and drops the ones that answer 404 (an issue number an agent made up). Other failures, such as being offline, keep the reference so the card shows the real error.
 - With nothing left, a "No issues found" notification shows in the bottom-right corner.
+- What GitHub answers is cached for 5 minutes, so pressing the key again a moment later does not ask GitHub again for the same references (a 404 is remembered too). The card shows its saved copy at once and refreshes it in the background when the copy is over a minute old; if the refresh fails, the saved copy stays.
 
 A bare `#1232` is looked up in the `origin` repo of the focused pane's folder.
 
@@ -41,6 +42,8 @@ position = "bottom-right"
 ## What it runs
 
 Read-only, with your own `gh` login: `herdr pane read` on the focused pane, `pbpaste` (or `xclip` on Linux) when the screen has no reference, `git remote get-url origin` in the focused folder, and `gh api repos/<owner>/<repo>/issues/<n>`. `o` opens only `https://github.com/...` links.
+
+The cache is `issues.json` in the plugin's state folder (`~/.local/state/herdr/plugins/gedu.issue-card/`), mode 600 because it holds issue text, private repos included. It keeps at most 100 entries for 24 hours; delete the file to clear it.
 
 ## Development
 
