@@ -1,6 +1,6 @@
 // `npm run setup`: installs agent-todos into Claude Code from this checkout.
 // 1. Adds the repo as a marketplace (`herdr-plugins`) and installs the mod for your user.
-// 2. Turns on Claude Code's task tools in ~/.claude/settings.json (backup next to it first).
+// 2. Turns on Claude Code's task tools in ~/.claude/settings.json (dated backup next to it first).
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -39,9 +39,11 @@ step(`${TODO_ENV}=1 in settings.json`, () => {
   const current = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
   const { settings, changed } = withTodoTools(current);
   if (!changed) return 'already set';
-  if (existsSync(file)) copyFileSync(file, `${file}.bak`);
+  // A dated backup, so running setup again never replaces an earlier one.
+  const backup = `${file}.bak-${new Date().toISOString().replace(/[:.]/g, '-')}`;
+  if (existsSync(file)) copyFileSync(file, backup);
   writeFileSync(file, `${JSON.stringify(settings, null, 2)}\n`);
-  return existsSync(`${file}.bak`) ? 'set (backup: settings.json.bak)' : 'set';
+  return existsSync(backup) ? `set (backup: ${backup})` : 'set';
 });
 
 console.log('\nRestart Claude Code: the TODOs button shows above the prompt.');

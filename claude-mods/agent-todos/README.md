@@ -31,7 +31,7 @@ Then restart Claude Code. The setup does three things and says `ok` for each:
 | --- | --- |
 | marketplace | Adds this repo to Claude Code as the `herdr-plugins` marketplace (a local directory, so `git pull` updates the mod) |
 | plugin | Installs `agent-todos@herdr-plugins` for your user |
-| settings | Adds `"CLAUDE_CODE_ENABLE_TODO_TOOLS": "1"` under `env` in `~/.claude/settings.json`, keeping everything else and leaving a `settings.json.bak` |
+| settings | Adds `"CLAUDE_CODE_ENABLE_TODO_TOOLS": "1"` under `env` in `~/.claude/settings.json`, keeping everything else and leaving a dated `settings.json.bak-…` first |
 
 The last step matters: Claude Code ships its task tools off, and without them agents have no
 todos, so the pane stays empty.
