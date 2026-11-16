@@ -2,9 +2,10 @@
 // focused pane. There is one panel at a time, so GitHub is polled once.
 import { readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
-import { execProgram } from './herdr.js';
+import { execProgram, openedPane } from './herdr.js';
 
 const bin = process.env.HERDR_BIN_PATH || 'herdr';
+const PANEL_SHRINK = 0.25;
 const stateDir = process.env.HERDR_PLUGIN_STATE_DIR;
 const pluginId = process.env.HERDR_PLUGIN_ID;
 if (!stateDir || !pluginId) { console.error('Run this through Herdr: herdr plugin action invoke <plugin-id>.toggle'); process.exit(2); }
@@ -25,5 +26,9 @@ if (open && (await execProgram(bin, ['pane', 'get', open])).code === 0) {
 
 const target = context.focused_pane_id ? ['--target-pane', context.focused_pane_id] : [];
 const r = await execProgram(bin, ['plugin', 'pane', 'open', '--plugin', pluginId, '--entrypoint', 'panel', '--placement', 'split', '--direction', 'right', '--no-focus', ...target]);
-if (r.code !== 0) console.error(r.stderr.trim());
-process.exit(r.code);
+if (r.code !== 0) { console.error(r.stderr.trim()); process.exit(r.code); }
+// Herdr splits in half; move the divider right by a quarter so the panel takes a quarter of the
+// space (half of the even split). A failed resize leaves the panel open at the even split.
+const pane = openedPane(r.stdout);
+if (pane) await execProgram(bin, ['pane', 'resize', '--pane', pane, '--direction', 'right', '--amount', String(PANEL_SHRINK)]);
+process.exit(0);

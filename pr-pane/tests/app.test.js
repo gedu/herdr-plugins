@@ -85,3 +85,19 @@ test('a Herdr error is shown instead of an empty list', async () => {
   await app.tick();
   assert.match(app.frame(size).map(stripAnsi).join(' '), /restart the Herdr server/);
 });
+
+test('r shows Reloading with moving dots at the bottom until it finishes, then Up to date for a moment', async () => {
+  let finish;
+  const tracker = { tick: () => new Promise((r) => { finish = r; }), cards: () => [], dismiss: () => {}, lastError: () => '' };
+  const slow = createApp({ host: { agents: async () => [A] }, tracker });
+  const foot = (now) => stripAnsi(slow.frame({ ...size, now }).at(-1));
+  const pending = slow.key('r');
+  await new Promise((r) => setImmediate(r));
+  assert.match(foot(0), /^ Reloading ●○○/);
+  assert.match(foot(160), /^ Reloading ●●○/);
+  finish();
+  await pending;
+  const t = slow.state.reloadedAt;
+  assert.match(foot(t + 500), /^ ✓ Up to date/);
+  assert.doesNotMatch(foot(t + 3_000), /Up to date|Reloading/);
+});

@@ -30,6 +30,11 @@ function parseHerdr(r, what) {
 
 const firstArray = (obj) => (Array.isArray(obj) ? obj : Object.values(obj ?? {}).find(Array.isArray) ?? []);
 
+// The pane id in the output of `herdr plugin pane open`, or null.
+export function openedPane(stdout) {
+  try { return JSON.parse(stdout)?.result?.plugin_pane?.pane?.pane_id ?? null; } catch { return null; }
+}
+
 export function createHost({ exec = execProgram, bin = process.env.HERDR_BIN_PATH || 'herdr', exists = existsSync, platform = process.platform } = {}) {
   const herdr = (...args) => exec(bin, args);
   const git = (cwd, ...args) => exec('git', ['-C', cwd, '--no-optional-locks', ...args]);

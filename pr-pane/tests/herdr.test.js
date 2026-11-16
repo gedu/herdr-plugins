@@ -86,3 +86,11 @@ test('only github.com https links reach the system opener', async () => {
   assert.equal(await host.open('file:///etc/passwd'), false);
   assert.deepEqual(calls, ['open https://github.com/o/r/pull/7']);
 });
+
+test('openedPane reads the pane id from herdr plugin pane open', async () => {
+  const { openedPane } = await import('../src/herdr.js');
+  const out = JSON.stringify({ result: { plugin_pane: { pane: { pane_id: 'w1T:pA' } }, type: 'plugin_pane_opened' } });
+  assert.equal(openedPane(out), 'w1T:pA');
+  assert.equal(openedPane('not json'), null);
+  assert.equal(openedPane('{}'), null);
+});

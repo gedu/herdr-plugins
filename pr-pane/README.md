@@ -19,6 +19,7 @@ A [Herdr](https://herdr.dev) TUI plugin that shows the pull requests your agents
 - **Per session.** The PRs of the agent you last focused come first, under `THIS SESSION`. Every other PR is grouped under the session that owns it.
 - **Jump to the agent.** Press `enter` on a PR, or click it, to focus the agent session that opened it.
 - **Timeline.** Press `→` to open a PR: CI, review and merge as a timeline, then the workflows that run after the merge.
+- **Reload.** Press `r` (or click the title) to check GitHub now; the bottom line says `Reloading ●○○` until it finishes, then `✓ Up to date`.
 - **It cleans up after itself.** A PR leaves the list when its agent switches to another branch, when its branch is deleted locally, when you press `x` or click `✕`, when it is closed, or 24 hours after it was merged.
 
 ## Requirements
