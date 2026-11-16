@@ -189,6 +189,16 @@ function detailBody(card, { width, now }) {
 const LIST_HINTS = ['↵ go', '→ info', 'x hide', 'o web', 'r refresh'];
 const DETAIL_HINTS = ['← back', '↵ go', 'o web', 'x hide'];
 
+const DOTS = ['●○○', '●●○', '●●●', '○●●', '○○●', '○○○'];
+const DONE_MS = 2_000;
+
+// The footer: key hints, or what a reload (r) is doing.
+function footer(state, hints, width, now) {
+  if (state.reloading) return paint([[` Reloading ${DOTS[Math.floor(now / 160) % DOTS.length]}`, S.gray]], width);
+  if (state.reloadedAt && now - state.reloadedAt < DONE_MS) return paint([[' ✓ Up to date', S.green]], width);
+  return paint([[footHint(hints, width), S.gray]], width);
+}
+
 function footHint(hints, width) {
   for (let n = hints.length; n > 1; n--) {
     const text = ` ${hints.slice(0, n).join(' · ')}`;
@@ -207,7 +217,7 @@ export function render(state, { width, height, now = Date.now() }) {
   head.push({ text: paint([['─'.repeat(w), S.gray]], w), hits: [] });
   const errors = state.error ? wrap(state.error, w - 2, 4).map((l) => ({ text: paint([[` ${l}`, S.red]], w), hits: [] })) : [];
   const body = [...errors, ...(detail ? detailBody(card, { width: w, now }) : listBody(state, { width: w, now }))];
-  const foot = { text: paint([[footHint(detail ? DETAIL_HINTS : LIST_HINTS, w), S.gray]], w), hits: [] };
+  const foot = { text: footer(state, detail ? DETAIL_HINTS : LIST_HINTS, w, now), hits: [] };
 
   // Keep the selected card on screen.
   const room = h - head.length - 1;

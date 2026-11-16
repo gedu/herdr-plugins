@@ -16,7 +16,19 @@ export function createApp({ host, tracker, sessionPane = null }) {
     if (state.view === 'detail' && !find(state.selected)) state.view = 'list';
   }
 
+  // A forced tick is the person pressing r: the footer says Reloading until it ends.
   app.tick = async ({ force = false } = {}) => {
+    if (!force) return run(false);
+    state.reloading = true;
+    try {
+      await run(true);
+    } finally {
+      state.reloading = false;
+      state.reloadedAt = Date.now();
+    }
+  };
+
+  async function run(force) {
     let agents;
     try {
       agents = await app.host.agents();
@@ -35,7 +47,7 @@ export function createApp({ host, tracker, sessionPane = null }) {
     await tracker.tick(agents, { force });
     state.error = tracker.lastError();
     sync();
-  };
+  }
 
   async function go(url) {
     const card = find(url);
