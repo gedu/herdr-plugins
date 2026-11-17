@@ -1,0 +1,6 @@
+{
+  "name": "wrap",
+  "version": "0.1.0",
+  "description": "/wrap saves where the session is; after /clear or a restart in the same folder, the next session picks it up",
+  "author": { "name": "gedu" }
+}

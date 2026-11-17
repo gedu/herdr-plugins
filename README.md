@@ -15,6 +15,7 @@ Claude Code mods live in [`claude-mods/`](claude-mods/); this repo is also their
 | Mod | What it does |
 | --- | --- |
 | [`agent-todos`](claude-mods/agent-todos/) | Shows the session's own todos (now, pending, done) in a pane beside the chat. |
+| [`wrap`](claude-mods/wrap/) | `/wrap` saves where the session is; after `/clear` the next session continues from it (`/unwrap` loads it by hand). |
 
 ## Install
 
@@ -101,6 +102,12 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
 
    ```sh
    cd ~/Documents/mine/herdr-plugins/claude-mods/agent-todos && npm run setup
+   ```
+
+7. **Claude Code `/wrap`.** Install the plugin and link the command, then restart Claude Code:
+
+   ```sh
+   cd ~/Documents/mine/herdr-plugins/claude-mods/wrap && npm run setup
    ```
 
 ### A key does nothing
