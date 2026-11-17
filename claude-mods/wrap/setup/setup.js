@@ -1,8 +1,8 @@
 // `npm run setup`: installs wrap from this checkout.
 // 1. Adds the repo as a marketplace (`herdr-plugins`) and installs the plugin (the hook that
 //    loads a brief after /clear or a restart).
-// 2. Links wrap.md into ~/.claude/commands, so the command is a plain `/wrap`: commands shipped
-//    inside a plugin get its name in front (`/wrap:wrap`).
+// 2. Links wrap.md and unwrap.md into ~/.claude/commands, so they are plain `/wrap` and
+//    `/unwrap`: commands shipped inside a plugin get its name in front (`/wrap:wrap`).
 import { execFileSync } from 'node:child_process';
 import { lstatSync, mkdirSync, readlinkSync, rmSync, symlinkSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -36,18 +36,21 @@ step('plugin wrap', () => {
   return 'installed';
 });
 
-step('command /wrap', () => {
-  const source = join(here, '..', 'wrap.md');
-  const target = join(homedir(), '.claude', 'commands', 'wrap.md');
+// Never replace a command the person wrote; only our own link is refreshed.
+function linkCommand(name) {
+  const source = join(here, '..', `${name}.md`);
+  const target = join(homedir(), '.claude', 'commands', `${name}.md`);
   mkdirSync(dirname(target), { recursive: true });
   let current = null;
   try { current = lstatSync(target); } catch { /* not there yet */ }
-  // Never replace a command the person wrote; only our own link is refreshed.
   if (current && !current.isSymbolicLink()) throw new Error(`${target} exists and is not a link; move it away first`);
   if (current && readlinkSync(target) === source) return 'already linked';
   if (current) rmSync(target);
   symlinkSync(source, target);
   return `linked ${target}`;
-});
+}
 
-console.log('\nRestart Claude Code: /wrap saves a brief, /clear loads it.');
+step('command /wrap', () => linkCommand('wrap'));
+step('command /unwrap', () => linkCommand('unwrap'));
+
+console.log('\nRestart Claude Code: /wrap saves a brief, /clear loads it (or /unwrap, in a Claude opened before this setup).');

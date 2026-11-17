@@ -32,4 +32,5 @@ work without them retyping anything. Do these steps, then stop.
    Facts only, no greeting. Leave out secrets and tokens.
 
 3. **Reply** with one short line naming the file and saying: run `/clear` (or exit and start
-   Claude again in this folder) and the next session loads it once by itself.
+   Claude again in this folder) and the next session loads it once by itself; if it does not
+   show "Wrap loaded", run `/unwrap`.

@@ -15,7 +15,7 @@ Claude Code mods live in [`claude-mods/`](claude-mods/); this repo is also their
 | Mod | What it does |
 | --- | --- |
 | [`agent-todos`](claude-mods/agent-todos/) | Shows the session's own todos (now, pending, done) in a pane beside the chat. |
-| [`wrap`](claude-mods/wrap/) | `/wrap` saves where the session is; after `/clear` the next session continues from it, no copy and paste. |
+| [`wrap`](claude-mods/wrap/) | `/wrap` saves where the session is; after `/clear` the next session continues from it (`/unwrap` loads it by hand). |
 
 ## Install
 
