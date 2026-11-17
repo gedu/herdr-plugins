@@ -15,6 +15,7 @@ Claude Code mods live in [`claude-mods/`](claude-mods/); this repo is also their
 | Mod | What it does |
 | --- | --- |
 | [`agent-todos`](claude-mods/agent-todos/) | Shows the session's own todos (now, pending, done) in a pane beside the chat. |
+| [`handoff`](claude-mods/handoff/) | `/handoff` saves where the session is; after `/clear` the next session continues from it, no copy and paste. |
 
 ## Install
 
@@ -93,6 +94,13 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
 
    ```sh
    cd ~/Documents/mine/herdr-plugins/claude-mods/agent-todos && npm run setup
+   ```
+
+7. **Claude Code handoff.** Install the `handoff` plugin from the same marketplace (step 6
+   adds it), then restart Claude Code:
+
+   ```sh
+   claude plugin install handoff@herdr-plugins --scope user
    ```
 
 ### Where the config lives

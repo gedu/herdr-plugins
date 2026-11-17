@@ -8,6 +8,10 @@
     {
       "name": "agent-todos",
       "source": "./claude-mods/agent-todos"
+    },
+    {
+      "name": "handoff",
+      "source": "./claude-mods/handoff"
     }
   ]
 }
