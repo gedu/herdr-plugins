@@ -1,5 +1,5 @@
 // SessionStart hook: after /clear, or a fresh start in the same folder, load the handoff that
-// /handoff saved there. Each handoff loads once: it moves to used/ so the next start is clean.
+// /wrap saved there. Each handoff loads once: it moves to used/ so the next start is clean.
 import { mkdirSync, readFileSync, readdirSync, renameSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -12,7 +12,7 @@ function main() {
   try { input = JSON.parse(readFileSync(0, 'utf8') || '{}'); } catch { return; }
   if (!LOAD_ON.has(input.source) || !input.cwd) return;
 
-  const dir = process.env.CLAUDE_HANDOFF_DIR || join(homedir(), '.claude', 'handoffs');
+  const dir = process.env.CLAUDE_WRAP_DIR || join(homedir(), '.claude', 'wraps');
   let names = [];
   try { names = readdirSync(dir).filter((n) => n.endsWith('.md')); } catch { return; }
   const files = names.flatMap((name) => {
@@ -22,7 +22,7 @@ function main() {
     } catch { return []; }
   });
 
-  const hours = Number(process.env.CLAUDE_HANDOFF_MAX_AGE_HOURS);
+  const hours = Number(process.env.CLAUDE_WRAP_MAX_AGE_HOURS);
   const maxAgeMs = hours > 0 ? hours * 3_600_000 : MAX_AGE_MS;
   const picked = pickHandoff(files, { cwd: input.cwd, now: Date.now(), maxAgeMs });
   if (!picked) return;
@@ -30,7 +30,7 @@ function main() {
   mkdirSync(join(dir, 'used'), { recursive: true });
   renameSync(join(dir, picked.name), join(dir, 'used', picked.name));
   process.stdout.write(JSON.stringify({
-    systemMessage: `Handoff loaded: ${picked.name}`,
+    systemMessage: `Wrap loaded: ${picked.name}`,
     hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: contextFor(picked) },
   }));
 }

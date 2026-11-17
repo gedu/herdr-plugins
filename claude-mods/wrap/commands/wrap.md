@@ -9,7 +9,7 @@ work without them retyping anything. Do these steps, then stop.
 1. **Memory.** If Engram memory tools are available, save a session summary for this project
    (Goal, Discoveries, Accomplished, Next Steps, Relevant Files). Skip this step if they are not.
 
-2. **Handoff file.** Write one Markdown file to `$HOME/.claude/handoffs/` (absolute path; create
+2. **Brief file.** Write one Markdown file to `$HOME/.claude/wraps/` (absolute path; create
    the folder if needed), named `<YYYYMMDD-HHMMSS>-<short-topic-slug>.md`. It must start with this
    header, using the absolute current working directory of this session:
 

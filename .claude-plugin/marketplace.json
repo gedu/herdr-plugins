@@ -10,8 +10,8 @@
       "source": "./claude-mods/agent-todos"
     },
     {
-      "name": "handoff",
-      "source": "./claude-mods/handoff"
+      "name": "wrap",
+      "source": "./claude-mods/wrap"
     }
   ]
 }
