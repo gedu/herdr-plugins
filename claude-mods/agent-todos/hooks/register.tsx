@@ -63,6 +63,48 @@ const DEMO: Task[] = [
   { id: 'demo-3', subject: 'Desactivar odd-todos', status: 'completed' },
 ]
 
+// Handoff: the unfinished list is kept per folder in $.store, so the next session there
+// (after /clear or an exit) can be told about it and continue.
+const HANDOFF_DAYS = 14
+const BLOCK = 'agent-todos'
+
+export type Snapshot = { at: string; sessionId: string; tasks: Task[] }
+
+const keyFor = (cwd: string) => `list:${cwd}`
+const hasOpen = (list: Task[]) => list.some((one) => one.status !== 'completed')
+const LABEL: Record<Status, string> = { in_progress: 'in progress', pending: 'pending', completed: 'done' }
+
+export function handoffText(snapshot: Snapshot): string {
+  const lines = snapshot.tasks.map((one) => `- [${LABEL[one.status]}] ${one.subject}${one.detail ? ` (${one.detail})` : ''}`)
+  return [
+    `An earlier session in this folder (${snapshot.at.slice(0, 10)}) left this todo list unfinished:`,
+    ...lines,
+    'If the person asks to continue that work, recreate the open items with your task tools (TaskCreate or TodoWrite) and carry on.',
+    'If the request is unrelated, ignore this list and do not recreate it.',
+  ].join('\n')
+}
+
+// The snapshot a new session should be told about, or undefined: none saved, saved by this very
+// session (its own list), or older than HANDOFF_DAYS.
+export function handoffFor(saved: unknown, sessionId: string, now: number): Snapshot | undefined {
+  const snapshot = saved as Snapshot | undefined
+  if (!snapshot || !Array.isArray(snapshot.tasks) || snapshot.sessionId === sessionId) return undefined
+  if (!hasOpen(snapshot.tasks)) return undefined
+  const age = now - Date.parse(snapshot.at)
+  return Number.isFinite(age) && age <= HANDOFF_DAYS * 24 * 3600 * 1000 ? snapshot : undefined
+}
+
+async function saveHandoff($: EngineInterface, list: Task[]) {
+  try {
+    const key = keyFor(await $.session.cwd())
+    if (!hasOpen(list)) return await $.store.delete(key)
+    const snapshot: Snapshot = { at: new Date(await $.clock.now()).toISOString(), sessionId: await $.session.id(), tasks: list }
+    await $.store.set(key, snapshot)
+  } catch {
+    // The handoff is a convenience; the pane keeps working without it.
+  }
+}
+
 // Cells of the done part of a bar `width` wide.
 export function filled(done: number, total: number, width: number): number {
   return total === 0 ? 0 : Math.round((done / total) * width)
@@ -79,6 +121,7 @@ async function setTasks($: EngineInterface, fn: (list: Task[]) => Task[]) {
   try {
     const before = await read($, tasks)
     const after = await update($, tasks, fn)
+    await saveHandoff($, after)
     if (before.length === 0 && after.length > 0) await openPane($)
   } catch {
     // A failed write only leaves the pane stale; the tool call itself stands.
@@ -101,9 +144,22 @@ export const register: Register = (on) => {
     }
     if (arg === 'clear') {
       await update($, tasks, () => [])
+      await saveHandoff($, [])
       return { text: 'Todos cleared.' }
     }
     return { text: await openPane($) }
+  })
+
+  // A new conversation (a fresh session, or after /clear) is told about the list the last one left.
+  on('prompt.context', async ($, e, next) => {
+    try {
+      const saved = await $.store.get(keyFor(await $.session.cwd()))
+      const snapshot = handoffFor(saved, await $.session.id(), await $.clock.now())
+      if (snapshot) return next({ ...e, blocks: [...e.blocks, { name: BLOCK, text: handoffText(snapshot) }] })
+    } catch {
+      // Without the handoff the session simply starts empty.
+    }
+    return next(e)
   })
 
   on('tool.call', { tool: 'TodoWrite' }, async ($, e, next) => {

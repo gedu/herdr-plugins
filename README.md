@@ -41,6 +41,14 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    herdr --version && node --version && hunk --version
    ```
 
+   The Herdr server runs plugins with `node` from its own PATH, which may not include a version
+   manager such as nvm. If `node` only lives under `~/.nvm`, link it into a folder the server
+   sees (`~/.local/bin` or `/opt/homebrew/bin`), and link it again after switching versions:
+
+   ```sh
+   ln -sf "$(command -v node)" ~/.local/bin/node
+   ```
+
 2. **Plugins.** Clone the repo and link each folder, so local edits apply right away:
 
    ```sh
@@ -101,6 +109,17 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    ```sh
    cd ~/Documents/mine/herdr-plugins/claude-mods/wrap && npm run setup
    ```
+
+### A key does nothing
+
+Check the plugin's last runs:
+
+```sh
+herdr plugin log list   # each run with its status and error
+```
+
+`No such file or directory (os error 2)` on every plugin means the Herdr server cannot find
+`node`: see the nvm note in step 1.
 
 ### Where the config lives
 
