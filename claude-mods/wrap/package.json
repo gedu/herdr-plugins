@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "setup": "node setup/setup.js",
     "test": "node --test tests/*.test.js"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

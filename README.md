@@ -96,11 +96,10 @@ Written so an agent can run it top to bottom. Each step says how to check it wor
    cd ~/Documents/mine/herdr-plugins/claude-mods/agent-todos && npm run setup
    ```
 
-7. **Claude Code wrap.** Install the `wrap` plugin from the same marketplace (step 6
-   adds it), then restart Claude Code:
+7. **Claude Code `/wrap`.** Install the plugin and link the command, then restart Claude Code:
 
    ```sh
-   claude plugin install wrap@herdr-plugins --scope user
+   cd ~/Documents/mine/herdr-plugins/claude-mods/wrap && npm run setup
    ```
 
 ### Where the config lives

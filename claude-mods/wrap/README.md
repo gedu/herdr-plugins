@@ -15,12 +15,16 @@ Each handoff loads once, in the folder it was written in, within 24 hours. `/res
 
 ## Install
 
+From a clone of this repo:
+
 ```sh
-claude plugin marketplace add gedu/herdr-plugins   # once; or the path of a clone
-claude plugin install wrap@herdr-plugins --scope user
+cd claude-mods/wrap && npm run setup
 ```
 
-Restart Claude Code afterwards.
+It adds the repo as the `herdr-plugins` marketplace, installs the plugin (the hook), and links
+`wrap.md` to `~/.claude/commands/wrap.md`. The command lives outside the plugin on purpose:
+a plugin's commands get its name in front (`/wrap:wrap`). Setup never replaces a `wrap.md`
+you wrote yourself. Restart Claude Code afterwards.
 
 ## Details
 
@@ -29,4 +33,5 @@ Restart Claude Code afterwards.
 | Where briefs live | `~/.claude/wraps/*.md`, each starting with a `cwd:` header. Loaded ones move to `used/`. |
 | When one loads | A `SessionStart` hook on `clear` and `startup` picks the newest brief whose `cwd` is this folder. |
 | Settings | `CLAUDE_WRAP_DIR` (other folder), `CLAUDE_WRAP_MAX_AGE_HOURS` (default 24). |
+| Command | `wrap.md`, linked into `~/.claude/commands/`. |
 | Tests | `npm test` |
