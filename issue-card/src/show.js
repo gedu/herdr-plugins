@@ -3,9 +3,11 @@
 // the clipboard. Runs with no terminal, so errors go to the plugin log.
 import { execFile } from 'node:child_process';
 import { targetOf, parseRemote, refsIn } from './target.js';
-import { keepExisting } from './exists.js';
+import { lookup } from './exists.js';
+import { loadCache, saveCache } from './cache.js';
 
 const SCREEN_LINES = '300';
+const stateDir = process.env.HERDR_PLUGIN_STATE_DIR || '';
 
 const run = (cmd, args) => new Promise((resolve) => {
   execFile(cmd, args, { timeout: 10_000, maxBuffer: 8 * 1024 * 1024, encoding: 'utf8' }, (error, stdout, stderr) => resolve({ code: error ? 1 : 0, stdout: String(stdout ?? ''), stderr: String(stderr ?? '') }));
@@ -37,7 +39,11 @@ async function clipboardRef() {
 const clicked = targetOf({ url });
 let refs = clicked ? [clicked] : await screenRefs();
 if (!refs.length) refs = await clipboardRef();
-refs = await keepExisting(refs, run);
+// Answers GitHub gave in the last few minutes are reused, so pressing the key again is quick.
+const now = Date.now();
+const found = await lookup(refs, run, await loadCache(stateDir), now);
+refs = found.refs;
+await saveCache(stateDir, found.entries, now);
 if (!refs.length) {
   // Nothing to show is not a failure: say so in a corner toast instead of exiting with an error.
   const n = await run(bin, ['notification', 'show', 'No issues found', '--body', 'No existing issue or PR on this screen or in the clipboard.', '--position', 'bottom-right', '--sound', 'none']);
@@ -47,6 +53,6 @@ if (!refs.length) {
 
 const list = refs.map((r) => `${r.repo}#${r.number}`).join(',');
 const r = await run(bin, ['plugin', 'pane', 'open', '--plugin', pluginId, '--entrypoint', 'card',
-  '--env', `ISSUE_CARD_REFS=${list}`, '--env', `ISSUE_CARD_REPO=${repo ?? ''}`]);
+  '--env', `ISSUE_CARD_REFS=${list}`, '--env', `ISSUE_CARD_REPO=${repo ?? ''}`, '--env', `ISSUE_CARD_CACHE=${stateDir}`]);
 if (r.code !== 0) console.error(r.stderr.trim() || r.stdout.trim());
 process.exit(r.code);
